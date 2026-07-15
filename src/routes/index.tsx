@@ -464,7 +464,6 @@ function Experience() {
     </Section>
   );
 }
-
 /* ---------- Contact ---------- */
 function Contact() {
   const links = [
@@ -490,9 +489,8 @@ function Contact() {
           ))}
         </div>
         <a href="/CV.pdf" download="Ilkin_Farajov_CV.pdf" className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold"
-  style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
-  <Download className="h-4 w-4" /> Download CV
-</a>
+          style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
+          <Download className="h-4 w-4" /> Download CV
         </a>
       </div>
     </Section>
