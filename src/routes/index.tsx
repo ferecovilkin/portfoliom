@@ -217,7 +217,7 @@ function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="#home" className="flex items-center gap-2 font-mono font-bold">
           <Terminal className="h-5 w-5 text-primary" />
-          <span>ilkin<span className="text-primary">@sec</span>:~$</span>
+          <span>ilkin.farajov<span className="text-primary">:~$</span></span>
         </a>
         <nav className="hidden gap-6 md:flex">
           {links.map(([id, label]) => (
