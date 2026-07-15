@@ -11,7 +11,7 @@ import {
   SiMetasploit, SiDocker, SiGit, SiVirtualbox,
 } from "react-icons/si";
 import { FaWindows } from "react-icons/fa";
-import cvAsset from "@/assets/CV.pdf.asset.json";
+
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -489,9 +489,10 @@ function Contact() {
             </motion.a>
           ))}
         </div>
-        <a href={cvAsset.url} download className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold"
-          style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
-          <Download className="h-4 w-4" /> Download CV
+        <a href="/CV.pdf" download="Ilkin_Farajov_CV.pdf" className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold"
+  style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
+  <Download className="h-4 w-4" /> Download CV
+</a>
         </a>
       </div>
     </Section>
