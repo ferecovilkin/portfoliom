@@ -11,6 +11,7 @@ import {
   SiMetasploit, SiDocker, SiGit, SiVirtualbox,
 } from "react-icons/si";
 import { FaWindows } from "react-icons/fa";
+import cvAsset from "@/assets/CV.pdf.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
