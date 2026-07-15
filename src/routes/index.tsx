@@ -415,25 +415,19 @@ function Timeline() {
 }
 
 /* ---------- Certifications ---------- */
+const targetCerts = [
+  { name: "eJPT", full: "Junior Penetration Tester", org: "INE / eLearnSecurity", status: "Target" },
+  { name: "eCCPT", full: "Certified Cybersecurity Professional", org: "INE / eLearnSecurity", status: "Target" },
+  { name: "OSCP", full: "Offensive Security Certified Professional", org: "Offensive Security", status: "Target" },
+];
+
 function Certifications() {
   return (
     <Section id="certifications" kicker="./certs" title="Certifications">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[1, 2, 3].map((i) => (
-          <TiltCard key={i} className="rounded-xl border-2 border-dashed bg-card p-8 text-center" >
-            <Award className="mx-auto mb-4 h-12 w-12 text-primary opacity-50" />
-            <h3 className="mb-2 font-mono font-semibold">Coming Soon</h3>
-            <p className="text-sm text-muted-foreground">Certification in progress. Stay tuned.</p>
-          </TiltCard>
-        ))}
-      </div>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {[
-          { name: "eJPT", full: "Junior Penetration Tester", org: "INE / eLearnSecurity", status: "Target" },
-          { name: "eCCPT", full: "Certified Cybersecurity Professional", org: "INE / eLearnSecurity", status: "Target" },
-          { name: "OSCP", full: "Offensive Security Certified Professional", org: "Offensive Security", status: "Target" },
-        ].map((cert) => (
-          <TiltCard key={cert.name} className="rounded-xl border bg-card p-6 text-center transition-colors hover:border-primary">
+        {targetCerts.map((cert) => (
+          <TiltCard key={cert.name} className="rounded-xl border bg-card p-8 text-center transition-colors hover:border-primary">
+            <Award className="mx-auto mb-4 h-12 w-12 text-primary opacity-80" />
             <div className="mb-3 inline-flex rounded-lg px-3 py-1 font-mono text-xs text-primary" style={{ background: "color-mix(in oklab, var(--primary) 12%, transparent)" }}>
               {cert.status}
             </div>
