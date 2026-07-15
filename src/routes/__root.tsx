@@ -81,9 +81,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Portfolio of Ilkin Farajov — aspiring Red Team operator and penetration tester. Linux, Windows, Active Directory, and Web Security." },
       { name: "author", content: "Ilkin Farajov" },
       { property: "og:title", content: "Ilkin Farajov — Cybersecurity / Red Team Portfolio" },
-      { property: "og:description", content: "Red Team & penetration testing portfolio — projects, skills, timeline, and contact." },
+      { property: "og:description", content: "Portfolio of Ilkin Farajov — aspiring Red Team operator and penetration tester. Linux, Windows, Active Directory, and Web Security." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Ilkin Farajov — Cybersecurity / Red Team Portfolio" },
+      { name: "twitter:description", content: "Portfolio of Ilkin Farajov — aspiring Red Team operator and penetration tester. Linux, Windows, Active Directory, and Web Security." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1f1f5778-eb84-4f55-b12c-3b895ee7ea5e/id-preview-73e82c7b--3745c47b-dff6-42c8-a85f-4da9dcce1caf.lovable.app-1784142754752.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/1f1f5778-eb84-4f55-b12c-3b895ee7ea5e/id-preview-73e82c7b--3745c47b-dff6-42c8-a85f-4da9dcce1caf.lovable.app-1784142754752.png" },
     ],
     links: [
       {
