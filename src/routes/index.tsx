@@ -217,7 +217,7 @@ function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="#home" className="flex items-center gap-2 font-mono font-bold">
           <Terminal className="h-5 w-5 text-primary" />
-          <span>ilkin<span className="text-primary">@sec</span>:~$</span>
+          <span>ilkin.farajov<span className="text-primary">:~$</span></span>
         </a>
         <nav className="hidden gap-6 md:flex">
           {links.map(([id, label]) => (
@@ -427,6 +427,22 @@ function Certifications() {
           </TiltCard>
         ))}
       </div>
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {[
+          { name: "eJPT", full: "Junior Penetration Tester", org: "INE / eLearnSecurity", status: "Target" },
+          { name: "eCCPT", full: "Certified Cybersecurity Professional", org: "INE / eLearnSecurity", status: "Target" },
+          { name: "OSCP", full: "Offensive Security Certified Professional", org: "Offensive Security", status: "Target" },
+        ].map((cert) => (
+          <TiltCard key={cert.name} className="rounded-xl border bg-card p-6 text-center transition-colors hover:border-primary">
+            <div className="mb-3 inline-flex rounded-lg px-3 py-1 font-mono text-xs text-primary" style={{ background: "color-mix(in oklab, var(--primary) 12%, transparent)" }}>
+              {cert.status}
+            </div>
+            <h3 className="mb-1 font-mono text-xl font-bold">{cert.name}</h3>
+            <p className="mb-2 text-sm font-medium text-primary">{cert.full}</p>
+            <p className="text-xs text-muted-foreground">{cert.org}</p>
+          </TiltCard>
+        ))}
+      </div>
     </Section>
   );
 }
@@ -457,10 +473,10 @@ function Experience() {
 /* ---------- Contact ---------- */
 function Contact() {
   const links = [
-    { icon: Github, label: "GitHub", href: "https://github.com" },
-    { icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com" },
-    { icon: Mail, label: "Email", href: "mailto:hello@example.com" },
-    { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
+    { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
+    { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
+    { icon: Mail, label: "Email", href: "mailto:ferecovilkin77@gmail.com" },
+    { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/_ferecovilkin_/" },
   ];
   return (
     <Section id="contact" kicker="./contact --reach-out" title="Contact">
