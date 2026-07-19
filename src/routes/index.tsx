@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
-  Shield, Terminal, Github, Linkedin, Mail,
+  Shield, Terminal, Github, Linkedin, Mail, Key, Search, Eye,
   ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu
 } from "lucide-react";
 import {
@@ -23,7 +23,7 @@ const translations = {
     hero: { name: "ILKIN FARAJOV", status: "available for opportunities", subtitle: "Cyber Security · Red Team · Penetration Tester", viewBtn: "View Projects", contactBtn: "Contact Me" },
     about: { kicker: "cat about.md", title: "About", intro: "Hello! I am ILKIN FARAJOV.", p1: "I am currently studying cybersecurity, specifically focusing on Red Teaming and penetration testing. I am continuously developing my knowledge and skills in areas such as Linux, Windows, Active Directory, SQL, Python, and web security.", p2: "My goal is to become a professional penetration tester who identifies real-world security issues and contributes to their resolution.", focusing: "currently_focusing" },
     terminal: { kicker: "./terminal --interactive", title: "Interactive Terminal", welcome: "Welcome to ilkin.farajov terminal. Type 'help' to get started.", notFound: "command not found" },
-    skills: { kicker: "ls ./skills", title: "Skills", core: "// core", tooling: "// tooling" },
+    skills: { kicker: "ls ./skills", title: "Skills", core: "// methodologies & OS", tooling: "// pentest arsenal" },
     projects: { kicker: "./projects --list", title: "Projects" },
     timeline: { kicker: "git log --oneline", title: "Timeline" },
     certs: { kicker: "./certs", title: "Certifications" },
@@ -36,7 +36,7 @@ const translations = {
     hero: { name: "İLKİN FƏRƏCOV", status: "vakansiyalar üçün açıqdır", subtitle: "Kiber Təhlükəsizlik · Red Team · Penetrasiya Testçisi", viewBtn: "Layihələrə Bax", contactBtn: "Əlaqə Saxla" },
     about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOVAM.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və onların həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
     terminal: { kicker: "./terminal --interaktiv", title: "İnteraktiv Terminal", welcome: "İlkin Farajov terminalına xoş gəldiniz. Başlamaq üçün 'help' yazın.", notFound: "komanda tapılmadı" },
-    skills: { kicker: "ls ./bacariqlar", title: "Bacarıqlar", core: "// əsas", tooling: "// alətlər" },
+    skills: { kicker: "ls ./bacariqlar", title: "Bacarıqlar", core: "// metodologiya & ƏS", tooling: "// pentest arsenalı" },
     projects: { kicker: "./layiheler --siyahı", title: "Layihələr" },
     timeline: { kicker: "git log --oneline", title: "Zaman Oxu" },
     certs: { kicker: "./sertifikatlar", title: "Sertifikatlar" },
@@ -155,21 +155,29 @@ function Section({ id, title, kicker, children }: { id: string; title: string; k
 
 /* ---------- DATA ---------- */
 const coreSkills = [
-  { name: "Linux", icon: SiLinux },
-  { name: "Windows", icon: FaWindows },
-  { name: "SQL", icon: SiPostgresql },
-  { name: "Python", icon: SiPython },
+  { name: "Server Pentesting", icon: Cpu },
+  { name: "Privilege Escalation", icon: Shield },
+  { name: "Network Security", icon: Network },
+  { name: "Active Directory Attacks", icon: Lock },
+  { name: "Linux Administration", icon: SiLinux },
+  { name: "Windows Internals", icon: FaWindows },
+  { name: "SQL Exploitation", icon: SiPostgresql },
+  { name: "Python Automation", icon: SiPython },
 ];
 
 const tools = [
-  { name: "Burp Suite", icon: Bug },
   { name: "Nmap", icon: Network },
+  { name: "Hydra", icon: Key },
+  { name: "Gobuster", icon: Search },
+  { name: "Feroxbuster", icon: Eye },
+  { name: "Hashcat", icon: Lock },
+  { name: "John the Ripper", icon: Key },
+  { name: "Burp Suite", icon: Bug },
   { name: "Wireshark", icon: SiWireshark },
   { name: "Metasploit", icon: SiMetasploit },
   { name: "Kali Linux", icon: SiKalilinux },
-  { name: "Git", icon: SiGit },
   { name: "Docker", icon: SiDocker },
-  { name: "VirtualBox", icon: SiVirtualbox },
+  { name: "Git", icon: SiGit },
 ];
 
 const projects = [
@@ -411,10 +419,10 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     if (lower === "skills" || lower === "ls ./skills" || lower === "ls skills") {
       print([
         prompt,
-        { type: "out", text: "# core" },
+        { type: "out", text: "# methodologies & OS" },
         ...coreSkills.map((s) => ({ type: "out" as const, text: `- ${s.name}` })),
         { type: "out", text: "" },
-        { type: "out", text: "# tooling" },
+        { type: "out", text: "# pentest arsenal" },
         ...tools.map((tl) => ({ type: "out" as const, text: `- ${tl.name}` })),
       ]);
       return;
@@ -490,12 +498,12 @@ function Skills({ t }: { t: any }) {
         {/* Core Skills */}
         <div className="rounded-xl border bg-card p-8">
           <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.core}</h3>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {coreSkills.map((s) => (
-              <motion.div key={s.name} whileHover={{ scale: 1.05, y: -2 }}
+              <motion.div key={s.name} whileHover={{ scale: 1.02, y: -2 }}
                 className="flex items-center gap-3 rounded-lg border bg-background/50 px-4 py-4 font-mono text-sm transition-colors hover:border-primary hover:text-primary">
-                <s.icon className="h-5 w-5 text-primary" />
-                {s.name}
+                <s.icon className="h-5 w-5 text-primary shrink-0" />
+                <span className="truncate">{s.name}</span>
               </motion.div>
             ))}
           </div>
@@ -504,12 +512,12 @@ function Skills({ t }: { t: any }) {
         {/* Tooling Panel */}
         <div className="rounded-xl border bg-card p-8">
           <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.tooling}</h3>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {tools.map((t) => (
-              <motion.div key={t.name} whileHover={{ scale: 1.05, y: -2 }}
-                className="flex items-center gap-2 rounded-lg border bg-background/50 px-3 py-3 font-mono text-sm transition-colors hover:border-primary hover:text-primary">
-                <t.icon className="h-4 w-4" />
-                {t.name}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {tools.map((tl) => (
+              <motion.div key={tl.name} whileHover={{ scale: 1.02, y: -2 }}
+                className="flex items-center gap-2 rounded-lg border bg-background/50 px-3 py-3 font-mono text-xs sm:text-sm transition-colors hover:border-primary hover:text-primary">
+                <tl.icon className="h-4 w-4 text-primary shrink-0" />
+                <span className="truncate">{tl.name}</span>
               </motion.div>
             ))}
           </div>
