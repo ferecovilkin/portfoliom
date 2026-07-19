@@ -28,7 +28,7 @@ const translations = {
     timeline: { kicker: "git log --oneline", title: "Timeline" },
     certs: { kicker: "./certs", title: "Certifications" },
     exp: { kicker: "./experience", title: "Experience", role: "Cybersecurity Student & Independent Researcher", date: "2026 — Present", desc: "Building a portfolio of offensive-security labs, contributing to CTFs, and documenting methodology across Active Directory, web application security, and Linux/Windows privilege escalation." },
-    contact: { kicker: "./contact --reach-out", title: "Contact", text: "Open to internships, collaborations, and CTF teams. Reach out on any of the channels below.", cv: "Download CV" }
+    contact: { kicker: "./contact --reach-out", title: "Contact", text: "Open to internships, collaborations, and CTF teams. Reach out on any of the channels below." }
   },
   az: {
     langKey: "az",
@@ -41,7 +41,7 @@ const translations = {
     timeline: { kicker: "git log --oneline", title: "Zaman Oxu" },
     certs: { kicker: "./sertifikatlar", title: "Sertifikatlar" },
     exp: { kicker: "./təcrübə", title: "Təcrübə", role: "Kiber Təhlükəsizlik Tələbəsi və Müstəqil Tədqiqatçı", date: "2026 — Hazırda", desc: "Active Directory, veb tətbiq təhlükəsizliyi və Linux/Windows imtiyazlarının yüksəldilməsi üzrə ofansiv təhlükəsizlik laboratoriyaları qurmaq, CTF-lərdə iştirak etmək və metodologiyaları sənədləşdirmək." },
-    contact: { kicker: "./elaqe --müraciət", title: "Əlaqə", text: "Təcrübə proqramları, əməkdaşlıq və CTF komandaları üçün açığam. Aşağıdakı kanallarla əlaqə saxlaya bilərsiniz.", cv: "CV-ni Yüklə" }
+    contact: { kicker: "./elaqe --müraciət", title: "Əlaqə", text: "Təcrübə proqramları, əməkdaşlıq və CTF komandaları üçün açığam. Aşağıdakı kanallarla əlaqə saxlaya bilərsiniz.", cv: }
   }
 };
 
