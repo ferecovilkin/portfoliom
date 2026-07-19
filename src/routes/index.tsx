@@ -212,7 +212,7 @@ function Portfolio() {
 function Nav() {
   const links = [
     ["home", "Home"], ["about", "About"], ["skills", "Skills"],
-    ["projects", "Projects"], ["timeline", "Timeline"], ["contact", "Contact"],
+    ["projects", "Projects"], ["terminal", "Terminal"], ["timeline", "Timeline"], ["contact", "Contact"],
   ];
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)", borderBottom: "1px solid var(--color-border)" }}>
