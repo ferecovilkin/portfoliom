@@ -1,5 +1,26 @@
-/* ---------- Interactive Terminal Modal & Float Button ---------- */
+import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { Terminal } from "lucide-react"; // Layihənizdəki ikon kitabxanasına uyğun olaraq dəqiqləşdirin
+
 type TermLine = { type: "cmd" | "out" | "err"; text: string };
+
+interface Project {
+  title: string;
+  tags: string[];
+}
+
+interface CoreSkill {
+  name: string;
+}
+
+interface Tool {
+  name: string;
+}
+
+// Xarici dəyişənlərin (props və ya global state) mövcudluğunu sığortalamaq üçün default massivlər
+declare const projects: Project[];
+declare const coreSkills: CoreSkill[];
+declare const tools: Tool[];
 
 function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,18 +61,33 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
   ];
 
   const [history, setHistory] = useState<TermLine[]>([
-    { type: "out", text: t.terminal.welcome },
+    { type: "out", text: t?.terminal?.welcome || (lang === "en" ? "Welcome to Red Team TTY Shell." : "Red Team TTY Shell-ə xoş gəlmisiniz.") },
   ]);
 
+  // Terminal ekranının avtomatik aşağı sürüşməsi
   useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
   }, [history, isOpen]);
 
-  // Modal açılan kimi inputa fokuslanma
+  // Modal açılanda fokuslanma
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      const timer = setTimeout(() => inputRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
     }
+  }, [isOpen]);
+
+  // ESC düyməsi ilə modalın bağlanması dəstəyi
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
   const print = (lines: TermLine[]) => setHistory((h) => [...h, ...lines]);
@@ -60,6 +96,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     const cmd = raw.trim();
     const prompt: TermLine = { type: "cmd" as const, text: cmd };
     if (!cmd) { print([{ type: "cmd" as const, text: "" }]); return; }
+    
     setPast((p) => [...p, cmd]);
     setPastIdx(-1);
 
@@ -97,25 +134,39 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
       ]); 
       return; 
     }
-    if (lower === "about" || lower === "cat about.md") { print([prompt, ...ABOUT_LINES.map((text) => ({ type: "out" as const, text }))]); return; }
-    if (lower === "projects" || lower === "ls projects" || lower === "ls ./projects") {
-      print([prompt, { type: "out" as const, text: `total ${projects.length}` }, ...projects.map((p) => ({ type: "out" as const, text: `- ${p.title}  [${p.tags.join(", ")}]` }))]);
-      return;
+    
+    if (lower === "about" || lower === "cat about.md") { 
+      print([prompt, ...ABOUT_LINES.map((text) => ({ type: "out" as const, text }))]); 
+      return; 
     }
-    if (lower === "skills" || lower === "ls ./skills" || lower === "ls skills") {
+    
+    if (lower === "projects" || lower === "ls projects" || lower === "ls ./projects") {
+      const items = projects || [];
       print([
-        prompt,
-        { type: "out" as const, text: "# methodologies & OS" },
-        ...coreSkills.map((s) => ({ type: "out" as const, text: `- ${s.name}` })),
-        { type: "out" as const, text: "" },
-        { type: "out" as const, text: "# pentest arsenal" },
-        ...tools.map((tl) => ({ type: "out" as const, text: `- ${tl.name}` })),
+        prompt, 
+        { type: "out" as const, text: `total ${items.length}` }, 
+        ...items.map((p) => ({ type: "out" as const, text: `- ${p.title}  [${p.tags.join(", ")}]` }))
       ]);
       return;
     }
+    
+    if (lower === "skills" || lower === "ls ./skills" || lower === "ls skills") {
+      const sItems = coreSkills || [];
+      const tItems = tools || [];
+      print([
+        prompt,
+        { type: "out" as const, text: "# methodologies & OS" },
+        ...sItems.map((s) => ({ type: "out" as const, text: `- ${s.name}` })),
+        { type: "out" as const, text: "" },
+        { type: "out" as const, text: "# pentest arsenal" },
+        ...tItems.map((tl) => ({ type: "out" as const, text: `- ${tl.name}` })),
+      ]);
+      return;
+    }
+    
     if (lower === "whoami") { print([prompt, { type: "out" as const, text: "ilkin.farajov" }]); return; }
 
-    // Advanced Commands
+    // Advanced Pentesting Logs simulation
     if (lower === "systeminfo") {
       print([
         prompt,
@@ -253,27 +304,44 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
       return;
     }
 
-    print([prompt, { type: "err" as const, text: `${t.terminal.notFound}: ${cmd}. Type 'help' to review pentest arsenal.` }]);
+    // Təhlükəsiz translation yoxlaması - t obyekti boş olarsa çökmənin qarşısını alır
+    const fallbackMsg = lang === "en" ? "Command not found" : "Komanda tapılmadı";
+    const notFoundText = t?.terminal?.notFound || fallbackMsg;
+
+    print([
+      prompt, 
+      { type: "err" as const, text: `${notFoundText}: ${cmd}. Type 'help' to review pentest arsenal.` }
+    ]);
   };
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") { run(input); setInput(""); }
-    else if (e.key === "ArrowUp") {
+    if (e.key === "Enter") {
+      const currentInput = input;
+      setInput(""); // Input terminal dövrü kəsilmədən öncə təmizlənir
+      run(currentInput);
+    } else if (e.key === "ArrowUp") {
       e.preventDefault();
       if (!past.length) return;
       const idx = pastIdx === -1 ? past.length - 1 : Math.max(0, pastIdx - 1);
-      setPastIdx(idx); setInput(past[idx] ?? "");
+      setPastIdx(idx);
+      setInput(past[idx] ?? "");
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
       if (pastIdx === -1) return;
       const idx = pastIdx + 1;
-      if (idx >= past.length) { setPastIdx(-1); setInput(""); } else { setPastIdx(idx); setInput(past[idx]); }
+      if (idx >= past.length) {
+        setPastIdx(-1);
+        setInput("");
+      } else {
+        setPastIdx(idx);
+        setInput(past[idx]);
+      }
     }
   };
 
   return (
     <>
-      {/* 1. Üzən İkon / Düymə (Floating Action Button) */}
+      {/* 1. Floating FAB Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
         aria-label="Open Interactive Terminal"
@@ -286,7 +354,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
         <Terminal className="h-6 w-6" />
       </motion.button>
 
-      {/* 2. Fullscreen Backdrop & Draggable Modal */}
+      {/* 2. Fullscreen Backdrop & Terminal Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <motion.div 
@@ -294,7 +362,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             className="w-full max-w-3xl rounded-xl border border-zinc-800 bg-zinc-950/90 overflow-hidden font-mono text-sm shadow-2xl flex flex-col h-[450px]"
           >
-            {/* Terminal Top Bar */}
+            {/* Top Bar */}
             <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3 bg-zinc-900/50 select-none">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-red-500/70" />
@@ -310,7 +378,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
               </button>
             </div>
 
-            {/* Terminal Body */}
+            {/* Body */}
             <div 
               onClick={() => inputRef.current?.focus()} 
               className="flex-1 overflow-y-auto p-4 space-y-2 bg-black/40 custom-scrollbar cursor-text"
@@ -332,7 +400,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
                 );
               })}
 
-              {/* Terminal Input Row */}
+              {/* Input Row */}
               <div className="flex gap-2 items-center pt-1">
                 <span className="text-primary shrink-0">ilkin.farajov:~$</span>
                 <input
@@ -353,3 +421,5 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     </>
   );
 }
+
+export default InteractiveTerminal;
