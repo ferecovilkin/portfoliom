@@ -18,8 +18,9 @@ export const Route = createFileRoute("/")({
 /* ---------- TRANSLATIONS OBJECT ---------- */
 const translations = {
   en: {
+    langKey: "en",
     nav: { home: "./home", about: "./about", skills: "./skills", projects: "./projects", terminal: "./terminal", timeline: "./timeline", contact: "./contact" },
-    hero: { status: "available for opportunities", subtitle: "Cyber Security · Red Team · Penetration Tester" },
+    hero: { name: "ILKIN FARAJOV", status: "available for opportunities", subtitle: "Cyber Security · Red Team · Penetration Tester", viewBtn: "View Projects", contactBtn: "Contact Me" },
     about: { kicker: "cat about.md", title: "About", intro: "Hello! I am ILKIN FARAJOV.", p1: "I am currently studying cybersecurity, specifically focusing on Red Teaming and penetration testing. I am continuously developing my knowledge and skills in areas such as Linux, Windows, Active Directory, SQL, Python, and web security.", p2: "My goal is to become a professional penetration tester who identifies real-world security issues and contributes to their resolution.", focusing: "currently_focusing" },
     terminal: { kicker: "./terminal --interactive", title: "Interactive Terminal", welcome: "Welcome to ilkin.farajov terminal. Type 'help' to get started.", notFound: "command not found" },
     skills: { kicker: "ls ./skills", title: "Skills", core: "// core", tooling: "// tooling" },
@@ -30,15 +31,16 @@ const translations = {
     contact: { kicker: "./contact --reach-out", title: "Contact", text: "Open to internships, collaborations, and CTF teams. Reach out on any of the channels below.", cv: "Download CV" }
   },
   az: {
+    langKey: "az",
     nav: { home: "./ana-səhifə", about: "./haqqımda", skills: "./bacarıqlar", projects: "./layihələr", terminal: "./terminal", timeline: "./zaman-oxu", contact: "./əlaqə" },
-    hero: { status: "vakansiyalar üçün açıqdır", subtitle: "Kiber Təhlükəsizlik · Red Team · Penetrasiya Testçisi" },
+    hero: { name: "İLKİN FƏRƏCOV", status: "vakansiyalar üçün açıqdır", subtitle: "Kiber Təhlükəsizlik · Red Team · Penetrasiya Testçisi", viewBtn: "Layihələrə Bax", contactBtn: "Əlaqə Saxla" },
     about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOVAM.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və onların həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
     terminal: { kicker: "./terminal --interaktiv", title: "İnteraktiv Terminal", welcome: "İlkin Farajov terminalına xoş gəldiniz. Başlamaq üçün 'help' yazın.", notFound: "komanda tapılmadı" },
     skills: { kicker: "ls ./bacariqlar", title: "Bacarıqlar", core: "// əsas", tooling: "// alətlər" },
     projects: { kicker: "./layiheler --siyahı", title: "Layihələr" },
     timeline: { kicker: "git log --oneline", title: "Zaman Oxu" },
     certs: { kicker: "./sertifikatlar", title: "Sertifikatlar" },
-    exp: { kicker: "./təcrübə", title: "Təcrübə", role: "Kiber Təhlükəsizlik Tələbəsi və Müstəqil Tədqiqatçı", date: "2026 — Hazırda", desc: "Aktiv Directory, veb tətbiq təhlükəsizliyi və Linux/Windows imtiyazlarının yüksəldilməsi üzrə ofansiv təhlükəsizlik laboratoriyaları qurmaq, CTF-lərdə iştirak etmək və metodologiyaları sənədləşdirmək." },
+    exp: { kicker: "./təcrübə", title: "Təcrübə", role: "Kiber Təhlükəsizlik Tələbəsi və Müstəqil Tədqiqatçı", date: "2026 — Hazırda", desc: "Active Directory, veb tətbiq təhlükəsizliyi və Linux/Windows imtiyazlarının yüksəldilməsi üzrə ofansiv təhlükəsizlik laboratoriyaları qurmaq, CTF-lərdə iştirak etmək və metodologiyaları sənədləşdirmək." },
     contact: { kicker: "./elaqe --müraciət", title: "Əlaqə", text: "Təcrübə proqramları, əməkdaşlıq və CTF komandaları üçün açığam. Aşağıdakı kanallarla əlaqə saxlaya bilərsiniz.", cv: "CV-ni Yüklə" }
   }
 };
@@ -281,7 +283,7 @@ function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az"
 
 /* ---------- Hero ---------- */
 function Hero({ t }: { t: any }) {
-  const name = useTyping("ILKIN FARAJOV", 100);
+  const name = useTyping(t.hero.name, 100);
   return (
     <section id="home" className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-20">
       <div className="mx-auto max-w-4xl text-center">
@@ -311,12 +313,12 @@ function Hero({ t }: { t: any }) {
           <a href="#projects"
              className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold"
              style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
-            [ {t.lang === "az" ? "Layihələrə Bax" : "View Projects"} ]
+            [ {t.hero.viewBtn} ]
           </a>
           <a href="#contact"
              className="btn-glow inline-flex items-center gap-2 rounded-md border px-6 py-3 font-mono text-sm font-semibold text-primary"
              style={{ borderColor: "var(--primary-hex)" }}>
-            [ {t.lang === "az" ? "Əlaqə Saxla" : "Contact Me"} ]
+            [ {t.hero.contactBtn} ]
           </a>
         </motion.div>
 
@@ -558,7 +560,7 @@ function Projects({ t }: { t: any }) {
                   <Github className="h-4 w-4" /> GitHub
                 </a>
                 <a href="#" className="flex items-center gap-1 text-muted-foreground hover:text-primary">
-                  {t.lang === "az" ? "Daxil ol" : "Read More"} <ExternalLink className="h-3 w-3" />
+                  {t.langKey === "az" ? "Daxil ol" : "Read More"} <ExternalLink className="h-3 w-3" />
                 </a>
               </div>
             </TiltCard>
@@ -605,6 +607,14 @@ const targetCerts = [
   { name: "OSCP", full: "Offensive Security Certified Professional", org: "Offensive Security", status: "Target" },
 ];
 
+// Məqsəd sözünü dilə görə dinamikləşdirmək üçün kiçik status xəritəsi
+const getStatusLabel = (status: string, langKey: string) => {
+  if (status === "Target") {
+    return langKey === "az" ? "Hədəf" : "Target";
+  }
+  return status;
+};
+
 function Certifications({ t }: { t: any }) {
   return (
     <Section id="certifications" kicker={t.certs.kicker} title={t.certs.title}>
@@ -613,7 +623,7 @@ function Certifications({ t }: { t: any }) {
           <TiltCard key={cert.name} className="rounded-xl border bg-card p-8 text-center transition-colors hover:border-primary">
             <Award className="mx-auto mb-4 h-12 w-12 text-primary opacity-80" />
             <div className="mb-3 inline-flex rounded-lg px-3 py-1 font-mono text-xs text-primary" style={{ background: "color-mix(in oklab, var(--primary) 12%, transparent)" }}>
-              {cert.status}
+              {getStatusLabel(cert.status, t.langKey)}
             </div>
             <h3 className="mb-1 font-mono text-xl font-bold">{cert.name}</h3>
             <p className="mb-2 text-sm font-medium text-primary">{cert.full}</p>
@@ -685,7 +695,7 @@ function Footer() {
   return (
     <footer className="relative z-10 border-t">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 font-mono text-sm text-muted-foreground md:flex-row">
-        <p>© 2026 ILKIN FARAJOV</p>
+        <p>© 2026 İLKİN FƏRƏCOV</p>
         <p>Built with <span className="text-primary">React</span> & <span className="text-primary">Tailwind</span></p>
       </div>
     </footer>
