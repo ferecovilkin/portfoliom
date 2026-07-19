@@ -12,9 +12,9 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
-// Bust browser/proxy caches whenever the favicon is updated.
-// Increment this version and the favicon will be re-fetched on the next deploy.
-const FAVICON_VERSION = "1";
+// Build-time token injected by Vite. It changes on every build so the
+// favicon is always re-fetched after a deploy, with no manual version bump.
+const FAVICON_VERSION = typeof __FAVICON_VERSION__ !== "undefined" ? __FAVICON_VERSION__ : Date.now().toString();
 
 function NotFoundComponent() {
   return (
