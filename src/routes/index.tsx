@@ -198,6 +198,7 @@ function Portfolio() {
       <About />
       <Skills />
       <Projects />
+      <InteractiveTerminal />
       <Timeline />
       <Certifications />
       <Experience />
@@ -211,7 +212,7 @@ function Portfolio() {
 function Nav() {
   const links = [
     ["home", "Home"], ["about", "About"], ["skills", "Skills"],
-    ["projects", "Projects"], ["timeline", "Timeline"], ["contact", "Contact"],
+    ["projects", "Projects"], ["terminal", "Terminal"], ["timeline", "Timeline"], ["contact", "Contact"],
   ];
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)", borderBottom: "1px solid var(--color-border)" }}>
@@ -316,6 +317,138 @@ function About() {
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+/* ---------- Interactive Terminal ---------- */
+type TermLine = { type: "cmd" | "out" | "err"; text: string };
+
+const ABOUT_LINES = [
+  "Hello! I am ILKIN FARAJOV.",
+  "Cybersecurity student — focus: Red Teaming & penetration testing.",
+  "Continuously learning: Linux, Windows, Active Directory, SQL, Python, web security.",
+  "Goal: become a professional penetration tester who ships real-world impact.",
+];
+
+const HELP_LINES = [
+  "Available commands:",
+  "  help              show this help",
+  "  about             print bio (alias: cat about.md)",
+  "  skills            list core skills & tools (alias: ls ./skills)",
+  "  projects          list projects (alias: ls projects)",
+  "  whoami            print current user",
+  "  clear             clear the screen",
+];
+
+function InteractiveTerminal() {
+  const [history, setHistory] = useState<TermLine[]>([
+    { type: "out", text: "Welcome to ilkin.farajov terminal. Type 'help' to get started." },
+  ]);
+  const [input, setInput] = useState("");
+  const [past, setPast] = useState<string[]>([]);
+  const [pastIdx, setPastIdx] = useState<number>(-1);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [history]);
+
+  const print = (lines: TermLine[]) => setHistory((h) => [...h, ...lines]);
+
+  const run = (raw: string) => {
+    const cmd = raw.trim();
+    const prompt: TermLine = { type: "cmd", text: cmd };
+    if (!cmd) { print([{ type: "cmd", text: "" }]); return; }
+    setPast((p) => [...p, cmd]);
+    setPastIdx(-1);
+
+    const lower = cmd.toLowerCase();
+    if (lower === "clear" || lower === "cls") { setHistory([]); return; }
+    if (lower === "help" || lower === "?") { print([prompt, ...HELP_LINES.map((t) => ({ type: "out" as const, text: t }))]); return; }
+    if (lower === "about" || lower === "cat about.md") { print([prompt, ...ABOUT_LINES.map((t) => ({ type: "out" as const, text: t }))]); return; }
+    if (lower === "projects" || lower === "ls projects" || lower === "ls ./projects") {
+      print([prompt, { type: "out", text: `total ${projects.length}` }, ...projects.map((p) => ({ type: "out" as const, text: `- ${p.title}  [${p.tags.join(", ")}]` }))]);
+      return;
+    }
+    if (lower === "skills" || lower === "ls ./skills" || lower === "ls skills") {
+      print([
+        prompt,
+        { type: "out", text: "# core" },
+        ...skillsBars.map((s) => ({ type: "out" as const, text: `- ${s.name} :: ${s.value}%` })),
+        { type: "out", text: "" },
+        { type: "out", text: "# tooling" },
+        ...tools.map((t) => ({ type: "out" as const, text: `- ${t.name}` })),
+      ]);
+      return;
+    }
+    if (lower === "whoami") { print([prompt, { type: "out", text: "ilkin.farajov" }]); return; }
+    print([prompt, { type: "err", text: `command not found: ${cmd}. Type 'help'.` }]);
+  };
+
+  const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") { run(input); setInput(""); }
+    else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!past.length) return;
+      const idx = pastIdx === -1 ? past.length - 1 : Math.max(0, pastIdx - 1);
+      setPastIdx(idx); setInput(past[idx] ?? "");
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (pastIdx === -1) return;
+      const idx = pastIdx + 1;
+      if (idx >= past.length) { setPastIdx(-1); setInput(""); } else { setPastIdx(idx); setInput(past[idx]); }
+    }
+  };
+
+  return (
+    <Section id="terminal" kicker="./terminal --interactive" title="Interactive Terminal">
+      <div
+        onClick={() => inputRef.current?.focus()}
+        className="rounded-xl border bg-card overflow-hidden font-mono text-sm shadow-lg"
+      >
+        <div className="flex items-center gap-2 border-b px-4 py-2 bg-black/40">
+          <span className="h-3 w-3 rounded-full bg-red-500/70" />
+          <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
+          <span className="h-3 w-3 rounded-full bg-green-500/70" />
+          <span className="ml-3 text-xs text-muted-foreground">ilkin.farajov@sec: ~</span>
+        </div>
+        <div
+          ref={scrollRef}
+          className="h-80 overflow-y-auto p-4 space-y-1 bg-black/60"
+        >
+          {history.map((l, i) => {
+            if (l.type === "cmd") {
+              return (
+                <div key={i} className="flex gap-2">
+                  <span className="text-primary shrink-0">ilkin.farajov:~$</span>
+                  <span className="text-foreground break-all">{l.text}</span>
+                </div>
+              );
+            }
+            return (
+              <div key={i} className={l.type === "err" ? "text-red-400 whitespace-pre-wrap" : "text-muted-foreground whitespace-pre-wrap"}>
+                {l.text}
+              </div>
+            );
+          })}
+          <div className="flex gap-2 items-center">
+            <span className="text-primary shrink-0">ilkin.farajov:~$</span>
+            <input
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={onKey}
+              autoComplete="off"
+              spellCheck={false}
+              aria-label="Terminal input"
+              className="flex-1 bg-transparent outline-none border-none text-foreground caret-transparent"
+            />
+            <span className="term-cursor" />
+          </div>
         </div>
       </div>
     </Section>

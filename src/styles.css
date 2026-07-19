@@ -107,6 +107,15 @@
 /* Blinking terminal cursor */
 @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 @utility cursor-blink { animation: blink 1s step-end infinite; }
+@utility term-cursor {
+  display: inline-block;
+  width: 0.5rem;
+  height: 1rem;
+  background: var(--primary-hex);
+  box-shadow: 0 0 6px var(--primary-hex);
+  animation: blink 1s step-end infinite;
+  margin-left: -0.25rem;
+}
 
 /* Floating dots */
 @keyframes float-up {
