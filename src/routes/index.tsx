@@ -34,7 +34,7 @@ const translations = {
     langKey: "az",
     nav: { home: "Ana Səhifə", about: "Haqqımda", skills: "Bacarıqlar", projects: "Layihələr", terminal: "Terminal", timeline: "Zaman Oxu", contact: "Əlaqə" },
     hero: { name: "İLKİN FƏRƏCOV", status: "vakansiyalar üçün açıqdır", subtitle: "Kiber Təhlükəsizlik · Red Team · Penetrasiya Testçisi", viewBtn: "Layihələrə Bax", contactBtn: "Əlaqə Saxla" },
-    about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOVAM.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və onların həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
+    about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOVAM.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və niiden həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
     terminal: { kicker: "./terminal --interaktiv", title: "İnteraktiv Terminal", welcome: "İlkin Farajov terminalına xoş gəldiniz. Başlamaq üçün 'help' yazın.", notFound: "komanda tapılmadı" },
     skills: { kicker: "ls ./bacariqlar", title: "Bacarıqlar", core: "// metodologiya & ƏS", tooling: "// pentest arsenalı" },
     projects: { kicker: "./layiheler --siyahı", title: "Layihələr" },
@@ -199,7 +199,7 @@ const timeline = [
 ];
 
 /* ---------- MAIN ---------- */
-function Portfolio() {
+export default function Portfolio() {
   const [lang, setLang] = useState<"en" | "az">("en");
   const t = translations[lang];
 
@@ -225,7 +225,8 @@ function Portfolio() {
 function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az") => void; t: any }) {
   const links = [
     ["home", t.nav.home], ["about", t.nav.about], ["skills", t.nav.skills],
-    ["projects", t.nav.projects], ["terminal", t.nav.terminal], ["timeline", t.nav.timeline], ["contact", t.nav.contact],
+    ["projects", t.nav.projects], ["terminal", t.nav.terminal], ["timeline", t.nav.timeline],
+    ["certs", t.certs.title], ["experience", t.exp.title], ["contact", t.nav.contact],
   ];
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)", borderBottom: "1px solid var(--color-border)" }}>
@@ -378,12 +379,12 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     "  clear            clear the screen",
   ] : [
     "Mövcud komandalar:",
-    "  help                kömək menyusunu göstər",
-    "  about               bio məlumatı çıxar (alias: cat about.md)",
-    "  skills              bacarıq və alətləri siyahıla (alias: ls ./skills)",
-    "  projects            layihələri siyahıla (alias: ls projects)",
-    "  whoami              cari istifadəçini göstər",
-    "  clear               ekranı təmizlə",
+    "  help                 kömək menyusunu göstər",
+    "  about                bio məlumatı çıxar (alias: cat about.md)",
+    "  skills               bacarıq və alətləri siyahıla (alias: ls ./skills)",
+    "  projects             layihələri siyahıla (alias: ls projects)",
+    "  whoami               cari istifadəçini göstər",
+    "  clear                ekranı təmizlə",
   ];
 
   const [history, setHistory] = useState<TermLine[]>([
@@ -403,8 +404,8 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
 
   const run = (raw: string) => {
     const cmd = raw.trim();
-    const prompt: TermLine = { type: "cmd", text: cmd };
-    if (!cmd) { print([{ type: "cmd", text: "" }]); return; }
+    const prompt: TermLine = { type: "cmd" as const, text: cmd };
+    if (!cmd) { print([{ type: "cmd" as const, text: "" }]); return; }
     setPast((p) => [...p, cmd]);
     setPastIdx(-1);
 
@@ -413,22 +414,22 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     if (lower === "help" || lower === "?") { print([prompt, ...HELP_LINES.map((text) => ({ type: "out" as const, text }))]); return; }
     if (lower === "about" || lower === "cat about.md") { print([prompt, ...ABOUT_LINES.map((text) => ({ type: "out" as const, text }))]); return; }
     if (lower === "projects" || lower === "ls projects" || lower === "ls ./projects") {
-      print([prompt, { type: "out", text: `total ${projects.length}` }, ...projects.map((p) => ({ type: "out" as const, text: `- ${p.title}  [${p.tags.join(", ")}]` }))]);
+      print([prompt, { type: "out" as const, text: `total ${projects.length}` }, ...projects.map((p) => ({ type: "out" as const, text: `- ${p.title}  [${p.tags.join(", ")}]` }))]);
       return;
     }
     if (lower === "skills" || lower === "ls ./skills" || lower === "ls skills") {
       print([
         prompt,
-        { type: "out", text: "# methodologies & OS" },
+        { type: "out" as const, text: "# methodologies & OS" },
         ...coreSkills.map((s) => ({ type: "out" as const, text: `- ${s.name}` })),
-        { type: "out", text: "" },
-        { type: "out", text: "# pentest arsenal" },
+        { type: "out" as const, text: "" },
+        { type: "out" as const, text: "# pentest arsenal" },
         ...tools.map((tl) => ({ type: "out" as const, text: `- ${tl.name}` })),
       ]);
       return;
     }
-    if (lower === "whoami") { print([prompt, { type: "out", text: "ilkin.farajov" }]); return; }
-    print([prompt, { type: "err", text: `${t.terminal.notFound}: ${cmd}. Type 'help'.` }]);
+    if (lower === "whoami") { print([prompt, { type: "out" as const, text: "ilkin.farajov" }]); return; }
+    print([prompt, { type: "err" as const, text: `${t.terminal.notFound}: ${cmd}. Type 'help'.` }]);
   };
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -655,21 +656,32 @@ function Contact({ t }: { t: any }) {
   const links = [
     { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
     { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
-    { icon: Mail, label: "Email", href: "mailto:ilkinferecov@example.com" }
+    { icon: Mail, label: "Email", href: "mailto:ilkinferajov@sec.az" }
   ];
 
   return (
     <Section id="contact" kicker={t.contact.kicker} title={t.contact.title}>
-      <div className="mx-auto max-w-2xl rounded-xl border bg-card p-8 text-center">
-        <p className="mb-8 text-muted-foreground leading-relaxed">{t.contact.text}</p>
-        <div className="mb-8 flex flex-wrap justify-center gap-4">
-          {links.map((l) => (
-            <a key={l.label} href={l.href} target="_blank" rel="noreferrer"
-               className="inline-flex items-center gap-2 rounded-lg border bg-background/50 px-4 py-3 font-mono text-sm transition-colors hover:border-primary hover:text-primary">
-              <l.icon className="h-4 w-4" /> {l.label}
+      <div className="mx-auto max-w-2xl text-center">
+        <p className="mb-8 text-muted-foreground">{t.contact.text}</p>
+        <div className="mb-10 flex flex-wrap justify-center gap-4">
+          {links.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 rounded-lg border bg-card px-5 py-3 font-mono text-sm transition-colors hover:border-primary hover:text-primary"
+            >
+              <link.icon className="h-4 w-4 text-primary" />
+              {link.label}
             </a>
           ))}
         </div>
+        <button 
+          className="btn-glow inline-flex items-center gap-2 rounded-md border border-primary px-6 py-2.5 font-mono text-xs font-semibold text-primary transition-all"
+        >
+          [ {t.contact.cv} ]
+        </button>
       </div>
     </Section>
   );
@@ -678,8 +690,16 @@ function Contact({ t }: { t: any }) {
 /* ---------- Footer ---------- */
 function Footer() {
   return (
-    <footer className="relative z-10 border-t py-6 text-center font-mono text-xs text-muted-foreground">
-      <div>&copy; {new Date().getFullYear()} ilkin.farajov. All rights reserved.</div>
+    <footer className="relative z-10 border-t border-zinc-900 bg-black/40 py-8 font-mono text-xs text-center text-muted-foreground">
+      <div className="mx-auto max-w-6xl px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          &copy; {new Date().getFullYear()} ilkin.farajov. All rights reserved.
+        </div>
+        <div className="flex items-center gap-2 text-zinc-600">
+          <span>STATUS: SECURE</span>
+          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+        </div>
+      </div>
     </footer>
   );
 }
