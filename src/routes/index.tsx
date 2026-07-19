@@ -453,6 +453,9 @@ function InteractiveTerminal() {
       </div>
     </Section>
   );
+}
+
+/* ---------- Skills ---------- */
 function Skills() {
   return (
     <Section id="skills" kicker="ls ./skills" title="Skills">
