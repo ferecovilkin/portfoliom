@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Terminal } from "lucide-react"; // Layihənizdəki ikon kitabxanasına uyğun olaraq dəqiqləşdirin
+import { Terminal } from "lucide-react";
 
 type TermLine = { type: "cmd" | "out" | "err"; text: string };
 
@@ -17,7 +17,6 @@ interface Tool {
   name: string;
 }
 
-// Xarici dəyişənlərin (props və ya global state) mövcudluğunu sığortalamaq üçün default massivlər
 declare const projects: Project[];
 declare const coreSkills: CoreSkill[];
 declare const tools: Tool[];
@@ -52,26 +51,24 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     "  clear            clear the screen terminal buffer",
   ] : [
     "Mövcud komandalar:",
-    "  help                 kömək menyusunu göstər",
-    "  about                bio məlumatı çıxar (alias: cat about.md)",
-    "  skills               bacarıq və alətləri siyahıla (alias: ls ./skills)",
-    "  projects             layihələri siyahıla (alias: ls projects)",
-    "  whoami               cari istifadəçini göstər",
-    "  clear                ekranı təmizlə",
+    "  help             kömək menyusunu göstər",
+    "  about            bio məlumatı çıxar (alias: cat about.md)",
+    "  skills           bacarıq və alətləri siyahıla (alias: ls ./skills)",
+    "  projects         layihələri siyahıla (alias: ls projects)",
+    "  whoami           cari istifadəçini göstər",
+    "  clear            ekranı təmizlə",
   ];
 
   const [history, setHistory] = useState<TermLine[]>([
     { type: "out", text: t?.terminal?.welcome || (lang === "en" ? "Welcome to Red Team TTY Shell." : "Red Team TTY Shell-ə xoş gəlmisiniz.") },
   ]);
 
-  // Terminal ekranının avtomatik aşağı sürüşməsi
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [history, isOpen]);
 
-  // Modal açılanda fokuslanma
   useEffect(() => {
     if (isOpen) {
       const timer = setTimeout(() => inputRef.current?.focus(), 100);
@@ -79,7 +76,6 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     }
   }, [isOpen]);
 
-  // ESC düyməsi ilə modalın bağlanması dəstəyi
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) {
@@ -104,27 +100,26 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     const args = cmd.split(" ");
     const baseCmd = args[0].toLowerCase();
 
-    // Standart Komandalar
     if (lower === "clear" || lower === "cls") { setHistory([]); return; }
     if (lower === "help" || lower === "?") { 
       const advancedHelp = lang === "en" ? [
-        "  systeminfo                 print system architecture and network specs",
-        "  nmap -sV -p- portfolio     run an aggressive port scan on the host",
-        "  feroxbuster -u /url        fuzz web directories and hidden endpoints",
+        "  systeminfo               print system architecture and network specs",
+        "  nmap -sV -p- portfolio   run an aggressive port scan on the host",
+        "  feroxbuster -u /url      fuzz web directories and hidden endpoints",
         "  hydra -l admin -P pass.txt brute-force custom authentication protocol",
-        "  hashcat -m 0 hash.txt      crack captured MD5/SHA-256 administrative hashes",
-        "  cat /etc/passwd            dump local user database file",
-        "  sudo -l                    list available privileges for active user",
-        "  sudo env /bin/sh           exploit SUID misconfiguration to spawn root shell"
+        "  hashcat -m 0 hash.txt    crack captured MD5/SHA-256 administrative hashes",
+        "  cat /etc/passwd          dump local user database file",
+        "  sudo -l                  list available privileges for active user",
+        "  sudo env /bin/sh         exploit SUID misconfiguration to spawn root shell"
       ] : [
-        "  systeminfo                 sistem arxitekturası və şəbəkə göstəriciləri",
-        "  nmap -sV -p- portfolio     host üzərində aqressiv port skanını başlat",
-        "  feroxbuster -u /url        veb qovluqları və gizli keçidləri fuzzer et",
+        "  systeminfo               sistem arxitekturası və şəbəkə göstəriciləri",
+        "  nmap -sV -p- portfolio   host üzərində aqressiv port skanını başlat",
+        "  feroxbuster -u /url      veb qovluqları və gizli keçidləri fuzzer et",
         "  hydra -l admin -P pass.txt autentifikasiya protokoluna brute-force et",
-        "  hashcat -m 0 hash.txt      əldə edilmiş administrativ hashləri qır",
-        "  cat /etc/passwd            lokal istifadəçi məlumat bazasını çıxar",
-        "  sudo -l                    cari istifadəçinin mövcud imtiyazlarını siyahıla",
-        "  sudo env /bin/sh           root shell almaq üçün SUID boşluğunu istismar et"
+        "  hashcat -m 0 hash.txt    əldə edilmiş administrativ hashləri qır",
+        "  cat /etc/passwd          lokal istifadəçi məlumat bazasını çıxar",
+        "  sudo -l                  cari istifadəçinin mövcud imtiyazlarını siyahıla",
+        "  sudo env /bin/sh         root shell almaq üçün SUID boşluğunu istismar et"
       ];
       print([
         prompt, 
@@ -166,13 +161,12 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     
     if (lower === "whoami") { print([prompt, { type: "out" as const, text: "ilkin.farajov" }]); return; }
 
-    // Advanced Pentesting Logs simulation
     if (lower === "systeminfo") {
       print([
         prompt,
-        { type: "out" as const, text: "Host Name:                 LNV-SLIM5-STATION" },
-        { type: "out" as const, text: "OS Version:                Kali Linux v2026.2 / WSL2 Core" },
-        { type: "out" as const, text: "Architecture:              x64-based PC (AMD Ryzen 7)" },
+        { type: "out" as const, text: "Host Name:               LNV-SLIM5-STATION" },
+        { type: "out" as const, text: "OS Version:              Kali Linux v2026.2 / WSL2 Core" },
+        { type: "out" as const, text: "Architecture:            x64-based PC (AMD Ryzen 7)" },
         { type: "out" as const, text: "Internal Subnet:           192.168.1.0/24" },
         { type: "out" as const, text: "Active DHCP Clients:       Samsung_TV (1.10), iPhone17 (1.12), Xiaomi15T (1.15), Galaxy-A35 (1.18)" },
         { type: "out" as const, text: "Local Password Vault:      KeePass 2 Core Encryption (Master Key size: 30 chars)" },
@@ -207,11 +201,11 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
         { type: "out" as const, text: " ___  ___  ___  ___  _  _  ___  ___  ___  ___   ___  ___" },
         { type: "out" as const, text: " |__  |__  |__  |__  |\\/|  |__  |__  |__  |__   |__  |__" },
         { type: "out" as const, text: " W-ing threads... Using default wordlist: common.txt" },
-        { type: "out" as const, text: "\n200      GET      156l      452w     8452c http://127.0.0.1/" },
+        { type: "out" as const, text: "\n200      GET      156l      452w      8452c http://127.0.0.1/" },
         { type: "out" as const, text: "301      GET        0l        0w        0c http://127.0.0.1/assets => redirect" },
-        { type: "out" as const, text: "200      GET       45l      112w     1402c http://127.0.0.1/projects" },
-        { type: "out" as const, text: "403      GET        8l       22w      280c http://127.0.0.1/etc/passwd (Forbidden)" },
-        { type: "out" as const, text: "200      GET       12l       35w      520c http://127.0.0.1/about" },
+        { type: "out" as const, text: "200      GET       45l      112w      1402c http://127.0.0.1/projects" },
+        { type: "out" as const, text: "403      GET        8l       22w       280c http://127.0.0.1/etc/passwd (Forbidden)" },
+        { type: "out" as const, text: "200      GET       12l       35w       520c http://127.0.0.1/about" },
         { type: "out" as const, text: "200      GET        2l        5w       90c http://127.0.0.1/secret_backdoor_log.txt" },
         { type: "out" as const, text: "\n[+] Directory bursting completed. 6 endpoints found." }
       ]);
@@ -271,9 +265,9 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
       print([
         prompt,
         { type: "out" as const, text: "Matching Defaults entries for ilkin.farajov on LNV-SLIM5-STATION:" },
-        { type: "out" as const, text: "    env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/bin" },
+        { type: "out" as const, text: "   env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/bin" },
         { type: "out" as const, text: "\nUser ilkin.farajov may run the following commands on this host:" },
-        { type: "out" as const, text: "    (root) NOPASSWD: /usr/bin/env" },
+        { type: "out" as const, text: "   (root) NOPASSWD: /usr/bin/env" },
         { type: "out" as const, text: "[+] Vulnerability Found: /usr/bin/env has explicit NOPASSWD allocation. Leverage via shell escape." }
       ]);
       return;
@@ -304,7 +298,6 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
       return;
     }
 
-    // Təhlükəsiz translation yoxlaması - t obyekti boş olarsa çökmənin qarşısını alır
     const fallbackMsg = lang === "en" ? "Command not found" : "Komanda tapılmadı";
     const notFoundText = t?.terminal?.notFound || fallbackMsg;
 
@@ -317,7 +310,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       const currentInput = input;
-      setInput(""); // Input terminal dövrü kəsilmədən öncə təmizlənir
+      setInput(""); 
       run(currentInput);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
@@ -341,7 +334,6 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
 
   return (
     <>
-      {/* 1. Floating FAB Button */}
       <motion.button
         onClick={() => setIsOpen(true)}
         aria-label="Open Interactive Terminal"
@@ -354,7 +346,6 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
         <Terminal className="h-6 w-6" />
       </motion.button>
 
-      {/* 2. Fullscreen Backdrop & Terminal Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
           <motion.div 
@@ -362,7 +353,6 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             className="w-full max-w-3xl rounded-xl border border-zinc-800 bg-zinc-950/90 overflow-hidden font-mono text-sm shadow-2xl flex flex-col h-[450px]"
           >
-            {/* Top Bar */}
             <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3 bg-zinc-900/50 select-none">
               <div className="flex items-center gap-2">
                 <span className="h-3 w-3 rounded-full bg-red-500/70" />
@@ -378,7 +368,6 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
               </button>
             </div>
 
-            {/* Body */}
             <div 
               onClick={() => inputRef.current?.focus()} 
               className="flex-1 overflow-y-auto p-4 space-y-2 bg-black/40 custom-scrollbar cursor-text"
@@ -400,7 +389,6 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
                 );
               })}
 
-              {/* Input Row */}
               <div className="flex gap-2 items-center pt-1">
                 <span className="text-primary shrink-0">ilkin.farajov:~$</span>
                 <input
