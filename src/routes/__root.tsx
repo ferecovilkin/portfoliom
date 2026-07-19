@@ -12,6 +12,10 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
+// Bust browser/proxy caches whenever the favicon is updated.
+// Increment this version and the favicon will be re-fetched on the next deploy.
+const FAVICON_VERSION = "1";
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -94,7 +98,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      {
+        rel: "icon",
+        type: "image/png",
+        href: `/favicon.png?v=${FAVICON_VERSION}`,
+      },
     ],
   }),
   shellComponent: RootShell,
