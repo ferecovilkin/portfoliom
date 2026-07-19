@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
-  Shield, Terminal, Github, Linkedin, Mail, Instagram, Download,
+  Shield, Terminal, Github, Linkedin, Mail, Download,
   ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu
 } from "lucide-react";
 import {
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/")({
 const translations = {
   en: {
     langKey: "en",
-    nav: { home: "./home", about: "./about", skills: "./skills", projects: "./projects", terminal: "./terminal", timeline: "./timeline", contact: "./contact" },
+    nav: { home: "Home", about: "About", skills: "Skills", projects: "Projects", terminal: "Terminal", timeline: "Timeline", contact: "Contact" },
     hero: { name: "ILKIN FARAJOV", status: "available for opportunities", subtitle: "Cyber Security · Red Team · Penetration Tester", viewBtn: "View Projects", contactBtn: "Contact Me" },
     about: { kicker: "cat about.md", title: "About", intro: "Hello! I am ILKIN FARAJOV.", p1: "I am currently studying cybersecurity, specifically focusing on Red Teaming and penetration testing. I am continuously developing my knowledge and skills in areas such as Linux, Windows, Active Directory, SQL, Python, and web security.", p2: "My goal is to become a professional penetration tester who identifies real-world security issues and contributes to their resolution.", focusing: "currently_focusing" },
     terminal: { kicker: "./terminal --interactive", title: "Interactive Terminal", welcome: "Welcome to ilkin.farajov terminal. Type 'help' to get started.", notFound: "command not found" },
@@ -32,7 +32,7 @@ const translations = {
   },
   az: {
     langKey: "az",
-    nav: { home: "./ana-səhifə", about: "./haqqımda", skills: "./bacarıqlar", projects: "./layihələr", terminal: "./terminal", timeline: "./zaman-oxu", contact: "./əlaqə" },
+    nav: { home: "Ana Səhifə", about: "Haqqımda", skills: "Bacarıqlar", projects: "Layihələr", terminal: "Terminal", timeline: "Zaman Oxu", contact: "Əlaqə" },
     hero: { name: "İLKİN FƏRƏCOV", status: "vakansiyalar üçün açıqdır", subtitle: "Kiber Təhlükəsizlik · Red Team · Penetrasiya Testçisi", viewBtn: "Layihələrə Bax", contactBtn: "Əlaqə Saxla" },
     about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOVAM.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və onların həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
     terminal: { kicker: "./terminal --interaktiv", title: "İnteraktiv Terminal", welcome: "İlkin Farajov terminalına xoş gəldiniz. Başlamaq üçün 'help' yazın.", notFound: "komanda tapılmadı" },
@@ -224,15 +224,15 @@ function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az"
           <Terminal className="h-5 w-5 text-primary" />
           <span>ilkin.farajov<span className="text-primary">:~$</span></span>
         </a>
-        <nav className="hidden gap-6 md:flex items-center">
+        <nav className="flex gap-4 md:gap-6 items-center overflow-x-auto max-w-full no-scrollbar py-1">
           {links.map(([id, label]) => (
-            <a key={id} href={`#${id}`} className="font-mono text-sm text-muted-foreground transition-colors hover:text-primary">
+            <a key={id} href={`#${id}`} className="font-mono text-xs md:text-sm text-muted-foreground transition-colors hover:text-primary whitespace-nowrap">
               {label}
             </a>
           ))}
           
           {/* Language Switcher */}
-          <div className="ml-4 font-mono text-xs border border-zinc-800 px-2 py-1 bg-zinc-900/50 rounded select-none">
+          <div className="ml-2 font-mono text-xs border border-zinc-800 px-2 py-1 bg-zinc-900/50 rounded select-none flex items-center shrink-0">
             <button 
               onClick={() => setLang("en")} 
               className={`px-1 transition-colors ${lang === "en" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
@@ -366,12 +366,12 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     "  clear            clear the screen",
   ] : [
     "Mövcud komandalar:",
-    "  help              kömək menyusunu göstər",
-    "  about             bio məlumatı çıxar (alias: cat about.md)",
-    "  skills            bacarıq və alətləri siyahıla (alias: ls ./skills)",
-    "  projects          layihələri siyahıla (alias: ls projects)",
-    "  whoami            cari istifadəçini göstər",
-    "  clear             ekranı təmizlə",
+    "  help               kömək menyusunu göstər",
+    "  about              bio məlumatı çıxar (alias: cat about.md)",
+    "  skills             bacarıq və alətləri siyahıla (alias: ls ./skills)",
+    "  projects           layihələri siyahıla (alias: ls projects)",
+    "  whoami             cari istifadəçini göstər",
+    "  clear              ekranı təmizlə",
   ];
 
   const [history, setHistory] = useState<TermLine[]>([
@@ -484,7 +484,7 @@ function Skills({ t }: { t: any }) {
   return (
     <Section id="skills" kicker={t.skills.kicker} title={t.skills.title}>
       <div className="grid gap-10 md:grid-cols-2">
-        {/* Core Skills - Minimalist Grid View */}
+        {/* Core Skills */}
         <div className="rounded-xl border bg-card p-8">
           <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.core}</h3>
           <div className="grid grid-cols-2 gap-3">
@@ -644,7 +644,7 @@ function Contact({ t }: { t: any }) {
   const links = [
     { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
     { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
-    { icon: Mail, label: "Email", href: "mailto:ilkinferecov@example.com" } // Nümunə link, öz emailinlə əvəzləyə bilərsən
+    { icon: Mail, label: "Email", href: "mailto:ilkinferecov@example.com" }
   ];
 
   return (
@@ -659,9 +659,6 @@ function Contact({ t }: { t: any }) {
             </a>
           ))}
         </div>
-        <button className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold text-primary border" style={{ borderColor: "var(--primary-hex)" }}>
-          <Download className="h-4 w-4" /> {t.contact.cv}
-        </button>
       </div>
     </Section>
   );
@@ -670,9 +667,9 @@ function Contact({ t }: { t: any }) {
 /* ---------- Footer ---------- */
 function Footer() {
   return (
-    <footer className="relative z-10 border-t py-8 text-center font-mono text-xs text-muted-foreground">
+    <footer className="relative z-10 border-t border-zinc-900 bg-black/20 py-8 text-center font-mono text-xs text-muted-foreground">
       <div className="mx-auto max-w-6xl px-6">
-        <p>© {new Date().getFullYear()} ilkin.farajov. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} ilkin.farajov. All rights reserved.</p>
       </div>
     </footer>
   );
