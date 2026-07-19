@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
-  Shield, Terminal, Github, Linkedin, Mail, Download,
+  Shield, Terminal, Github, Linkedin, Mail,
   ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu
 } from "lucide-react";
 import {
@@ -104,7 +104,9 @@ function TiltCard({ children, className = "" }: { children: React.ReactNode; cla
     <motion.div
       ref={ref}
       onMouseMove={(e) => {
-        const r = ref.current!.getBoundingClientRect();
+        const el = ref.current;
+        if (!el) return;
+        const r = el.getBoundingClientRect();
         x.set((e.clientX - r.left) / r.width - 0.5);
         y.set((e.clientY - r.top) / r.height - 0.5);
       }}
@@ -224,7 +226,7 @@ function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az"
           <Terminal className="h-5 w-5 text-primary" />
           <span>ilkin.farajov<span className="text-primary">:~$</span></span>
         </a>
-        <nav className="flex gap-4 md:gap-6 items-center overflow-x-auto max-w-full no-scrollbar py-1">
+        <nav className="flex gap-4 md:gap-6 items-center overflow-x-auto max-w-full md:max-w-none no-scrollbar py-1">
           {links.map(([id, label]) => (
             <a key={id} href={`#${id}`} className="font-mono text-xs md:text-sm text-muted-foreground transition-colors hover:text-primary whitespace-nowrap">
               {label}
@@ -235,6 +237,7 @@ function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az"
           <div className="ml-2 font-mono text-xs border border-zinc-800 px-2 py-1 bg-zinc-900/50 rounded select-none flex items-center shrink-0">
             <button 
               onClick={() => setLang("en")} 
+              aria-label="Switch language to English"
               className={`px-1 transition-colors ${lang === "en" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               EN
@@ -242,6 +245,7 @@ function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az"
             <span className="text-zinc-700 mx-1">|</span>
             <button 
               onClick={() => setLang("az")} 
+              aria-label="Switch language to Azerbaijani"
               className={`px-1 transition-colors ${lang === "az" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
             >
               AZ
@@ -262,7 +266,7 @@ function Hero({ t }: { t: any }) {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-xs"
           style={{ borderColor: "var(--primary-hex)", color: "var(--primary-hex)" }}>
-          <span className="h-2 w-2 rounded-full bg-primary cursor-blink" />
+          <span className="h-2 w-2 rounded-full bg-primary" />
           {t.hero.status}
         </motion.div>
 
@@ -366,12 +370,12 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     "  clear            clear the screen",
   ] : [
     "Mövcud komandalar:",
-    "  help               kömək menyusunu göstər",
-    "  about              bio məlumatı çıxar (alias: cat about.md)",
-    "  skills             bacarıq və alətləri siyahıla (alias: ls ./skills)",
-    "  projects           layihələri siyahıla (alias: ls projects)",
-    "  whoami             cari istifadəçini göstər",
-    "  clear              ekranı təmizlə",
+    "  help                kömək menyusunu göstər",
+    "  about               bio məlumatı çıxar (alias: cat about.md)",
+    "  skills              bacarıq və alətləri siyahıla (alias: ls ./skills)",
+    "  projects            layihələri siyahıla (alias: ls projects)",
+    "  whoami              cari istifadəçini göstər",
+    "  clear               ekranı təmizlə",
   ];
 
   const [history, setHistory] = useState<TermLine[]>([
@@ -469,9 +473,8 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
               autoComplete="off"
               spellCheck={false}
               aria-label="Terminal input"
-              className="flex-1 bg-transparent outline-none border-none text-foreground caret-transparent"
+              className="flex-1 bg-transparent outline-none border-none text-foreground caret-[var(--primary-hex)]"
             />
-            <span className="term-cursor" />
           </div>
         </div>
       </div>
@@ -566,7 +569,7 @@ function Timeline({ t, lang }: { t: any; lang: "en" | "az" }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.5 }}
-            className={`relative mb-10 flex md:justify-${i % 2 === 0 ? "start" : "end"}`}>
+            className={`relative mb-10 flex ${i % 2 === 0 ? "md:justify-start" : "md:justify-end"}`}>
             <div className={`ml-12 md:ml-0 md:w-[45%] ${i % 2 === 0 ? "md:mr-auto md:pr-8 md:text-right" : "md:ml-auto md:pl-8"}`}>
               <div className="rounded-xl border bg-card p-6">
                 <div className="mb-1 font-mono text-xs text-primary">{tm.year}</div>
@@ -599,7 +602,7 @@ const getStatusLabel = (status: string, langKey: string) => {
 
 function Certifications({ t }: { t: any }) {
   return (
-    <Section id="certifications" kicker={t.certs.kicker} title={t.certs.title}>
+    <Section id="certs" kicker={t.certs.kicker} title={t.certs.title}>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {targetCerts.map((cert) => (
           <TiltCard key={cert.name} className="rounded-xl border bg-card p-8 text-center transition-colors hover:border-primary">
@@ -667,10 +670,8 @@ function Contact({ t }: { t: any }) {
 /* ---------- Footer ---------- */
 function Footer() {
   return (
-    <footer className="relative z-10 border-t border-zinc-900 bg-black/20 py-8 text-center font-mono text-xs text-muted-foreground">
-      <div className="mx-auto max-w-6xl px-6">
-        <p>&copy; {new Date().getFullYear()} ilkin.farajov. All rights reserved.</p>
-      </div>
+    <footer className="relative z-10 border-t py-6 text-center font-mono text-xs text-muted-foreground">
+      <div>&copy; {new Date().getFullYear()} ilkin.farajov. All rights reserved.</div>
     </footer>
   );
 }
