@@ -677,11 +677,7 @@ function Contact({ t }: { t: any }) {
             </a>
           ))}
         </div>
-        <button 
-          className="btn-glow inline-flex items-center gap-2 rounded-md border border-primary px-6 py-2.5 font-mono text-xs font-semibold text-primary transition-all"
-        >
-          [ {t.contact.cv} ]
-        </button>
+        
       </div>
     </Section>
   );
