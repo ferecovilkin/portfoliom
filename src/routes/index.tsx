@@ -198,6 +198,7 @@ function Portfolio() {
       <About />
       <Skills />
       <Projects />
+      <InteractiveTerminal />
       <Timeline />
       <Certifications />
       <Experience />
