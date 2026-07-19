@@ -151,42 +151,14 @@ function Section({ id, title, kicker, children }: { id: string; title: string; k
   );
 }
 
-/* ---------- Progress bar ---------- */
-function SkillBar({ name, value, icon: Icon }: { name: string; value: number; icon: React.ElementType }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  return (
-    <div ref={ref}>
-      <div className="mb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Icon className="h-4 w-4 text-primary" />
-          <span className="font-mono text-sm">{name}</span>
-        </div>
-        <span className="font-mono text-sm text-primary">{value}%</span>
-      </div>
-      <div className="h-2 overflow-hidden rounded-full bg-muted">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={inView ? { width: `${value}%` } : {}}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="h-full rounded-full"
-          style={{
-            background: `linear-gradient(90deg, var(--primary-hex), color-mix(in oklab, var(--primary) 60%, white))`,
-            boxShadow: `0 0 10px var(--primary-hex)`,
-          }}
-        />
-      </div>
-    </div>
-  );
-}
-
 /* ---------- DATA ---------- */
-const skillsBars = [
-  { name: "Linux", value: 90, icon: SiLinux },
-  { name: "Windows", value: 80, icon: FaWindows },
-  { name: "SQL", value: 80, icon: SiPostgresql },
-  { name: "Python", value: 70, icon: SiPython },
+const coreSkills = [
+  { name: "Linux", icon: SiLinux },
+  { name: "Windows", icon: FaWindows },
+  { name: "SQL", icon: SiPostgresql },
+  { name: "Python", icon: SiPython },
 ];
+
 const tools = [
   { name: "Burp Suite", icon: Bug },
   { name: "Nmap", icon: Network },
@@ -386,12 +358,12 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
 
   const HELP_LINES = lang === "en" ? [
     "Available commands:",
-    "  help              show this help",
-    "  about             print bio (alias: cat about.md)",
-    "  skills            list core skills & tools (alias: ls ./skills)",
-    "  projects          list projects (alias: ls projects)",
-    "  whoami            print current user",
-    "  clear             clear the screen",
+    "  help             show this help",
+    "  about            print bio (alias: cat about.md)",
+    "  skills           list core skills & tools (alias: ls ./skills)",
+    "  projects         list projects (alias: ls projects)",
+    "  whoami           print current user",
+    "  clear            clear the screen",
   ] : [
     "Mövcud komandalar:",
     "  help              kömək menyusunu göstər",
@@ -436,7 +408,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
       print([
         prompt,
         { type: "out", text: "# core" },
-        ...skillsBars.map((s) => ({ type: "out" as const, text: `- ${s.name} :: ${s.value}%` })),
+        ...coreSkills.map((s) => ({ type: "out" as const, text: `- ${s.name}` })),
         { type: "out", text: "" },
         { type: "out", text: "# tooling" },
         ...tools.map((tl) => ({ type: "out" as const, text: `- ${tl.name}` })),
@@ -512,10 +484,21 @@ function Skills({ t }: { t: any }) {
   return (
     <Section id="skills" kicker={t.skills.kicker} title={t.skills.title}>
       <div className="grid gap-10 md:grid-cols-2">
-        <div className="space-y-6 rounded-xl border bg-card p-8">
-          <h3 className="font-mono text-sm text-primary">{t.skills.core}</h3>
-          {skillsBars.map((s) => <SkillBar key={s.name} {...s} />)}
+        {/* Core Skills - Minimalist Grid View */}
+        <div className="rounded-xl border bg-card p-8">
+          <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.core}</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {coreSkills.map((s) => (
+              <motion.div key={s.name} whileHover={{ scale: 1.05, y: -2 }}
+                className="flex items-center gap-3 rounded-lg border bg-background/50 px-4 py-4 font-mono text-sm transition-colors hover:border-primary hover:text-primary">
+                <s.icon className="h-5 w-5 text-primary" />
+                {s.name}
+              </motion.div>
+            ))}
+          </div>
         </div>
+
+        {/* Tooling Panel */}
         <div className="rounded-xl border bg-card p-8">
           <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.tooling}</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -607,7 +590,6 @@ const targetCerts = [
   { name: "OSCP", full: "Offensive Security Certified Professional", org: "Offensive Security", status: "Target" },
 ];
 
-// Məqsəd sözünü dilə görə dinamikləşdirmək üçün kiçik status xəritəsi
 const getStatusLabel = (status: string, langKey: string) => {
   if (status === "Target") {
     return langKey === "az" ? "Hədəf" : "Target";
@@ -662,29 +644,24 @@ function Contact({ t }: { t: any }) {
   const links = [
     { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
     { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
-    { icon: Mail, label: "Email", href: "mailto:ferecovilkin77@gmail.com" },
-    { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/_ferecovilkin_/" },
+    { icon: Mail, label: "Email", href: "mailto:ilkinferecov@example.com" } // Nümunə link, öz emailinlə əvəzləyə bilərsən
   ];
+
   return (
     <Section id="contact" kicker={t.contact.kicker} title={t.contact.title}>
-      <div className="rounded-2xl border bg-card p-10 text-center">
-        <p className="mx-auto mb-8 max-w-xl text-muted-foreground">
-          {t.contact.text}
-        </p>
-        <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <div className="mx-auto max-w-2xl rounded-xl border bg-card p-8 text-center">
+        <p className="mb-8 text-muted-foreground leading-relaxed">{t.contact.text}</p>
+        <div className="mb-8 flex flex-wrap justify-center gap-4">
           {links.map((l) => (
-            <motion.a key={l.label} href={l.href} target="_blank" rel="noreferrer"
-              whileHover={{ scale: 1.05, y: -3 }}
-              className="btn-glow flex flex-col items-center gap-2 rounded-xl border bg-background/50 p-5 font-mono text-sm hover:border-primary hover:text-primary">
-              <l.icon className="h-6 w-6" />
-              {l.label}
-            </motion.a>
+            <a key={l.label} href={l.href} target="_blank" rel="noreferrer"
+               className="inline-flex items-center gap-2 rounded-lg border bg-background/50 px-4 py-3 font-mono text-sm transition-colors hover:border-primary hover:text-primary">
+              <l.icon className="h-4 w-4" /> {l.label}
+            </a>
           ))}
         </div>
-        <a href="/CV.pdf" download="Ilkin_Farajov_CV.pdf" className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold"
-          style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
+        <button className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold text-primary border" style={{ borderColor: "var(--primary-hex)" }}>
           <Download className="h-4 w-4" /> {t.contact.cv}
-        </a>
+        </button>
       </div>
     </Section>
   );
@@ -693,10 +670,9 @@ function Contact({ t }: { t: any }) {
 /* ---------- Footer ---------- */
 function Footer() {
   return (
-    <footer className="relative z-10 border-t">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 py-8 font-mono text-sm text-muted-foreground md:flex-row">
-        <p>© 2026 İLKİN FƏRƏCOV</p>
-        <p>Built with <span className="text-primary">React</span> & <span className="text-primary">Tailwind</span></p>
+    <footer className="relative z-10 border-t py-8 text-center font-mono text-xs text-muted-foreground">
+      <div className="mx-auto max-w-6xl px-6">
+        <p>© {new Date().getFullYear()} ilkin.farajov. All rights reserved.</p>
       </div>
     </footer>
   );
