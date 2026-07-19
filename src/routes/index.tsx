@@ -41,7 +41,7 @@ const translations = {
     timeline: { kicker: "git log --oneline", title: "Zaman Oxu" },
     certs: { kicker: "./sertifikatlar", title: "Sertifikatlar" },
     exp: { kicker: "./təcrübə", title: "Təcrübə", role: "Kiber Təhlükəsizlik Tələbəsi və Müstəqil Tədqiqatçı", date: "2026 — Hazırda", desc: "Active Directory, veb tətbiq təhlükəsizliyi və Linux/Windows imtiyazlarının yüksəldilməsi üzrə ofansiv təhlükəsizlik laboratoriyaları qurmaq, CTF-lərdə iştirak etmək və metodologiyaları sənədləşdirmək." },
-    contact: { kicker: "./elaqe --müraciət", title: "Əlaqə", text: "Təcrübə proqramları, əməkdaşlıq və CTF komandaları üçün açığam. Aşağıdakı kanallarla əlaqə saxlaya bilərsiniz.", cv: }
+    contact: { kicker: "./elaqe --müraciət", title: "Əlaqə", text: "Təcrübə proqramları, əməkdaşlıq və CTF komandaları üçün açığam. Aşağıdakı kanallarla əlaqə saxlaya bilərsiniz." }
   }
 };
 
