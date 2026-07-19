@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { Terminal, Eye, Search, Key, Shield, Network, Bug, Cpu } from "lucide-react";
 import {
   Shield, Terminal, Github, Linkedin, Mail, Key, Search, Eye,
   ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu
@@ -155,10 +156,10 @@ function Section({ id, title, kicker, children }: { id: string; title: string; k
 
 /* ---------- DATA ---------- */
 const coreSkills = [
-  { name: "Server Pentesting", icon: Cpu },
-  { name: "Privilege Escalation", icon: Shield },
-  { name: "Network Security", icon: Network },
+  { name: "Web Application Pentesting", icon: Bug },
   { name: "Active Directory Attacks", icon: Lock },
+  { name: "Network Penetration Testing", icon: Network },
+  { name: "Privilege Escalation", icon: Shield },
   { name: "Linux Administration", icon: SiLinux },
   { name: "Windows Internals", icon: FaWindows },
   { name: "SQL Exploitation", icon: SiPostgresql },
@@ -166,18 +167,23 @@ const coreSkills = [
 ];
 
 const tools = [
+  { name: "Burp Suite", icon: Bug },
+  { name: "OWASP ZAP", icon: Shield },
   { name: "Nmap", icon: Network },
-  { name: "Hydra", icon: Key },
+  { name: "Metasploit", icon: SiMetasploit },
+  { name: "Impacket", icon: Terminal },
+  { name: "BloodHound", icon: Network },
+  { name: "Responder", icon: Eye },
+  { name: "ffuf", icon: Search },
   { name: "Gobuster", icon: Search },
   { name: "Feroxbuster", icon: Eye },
+  { name: "Hydra", icon: Key },
   { name: "Hashcat", icon: Lock },
   { name: "John the Ripper", icon: Key },
-  { name: "Burp Suite", icon: Bug },
   { name: "Wireshark", icon: SiWireshark },
-  { name: "Metasploit", icon: SiMetasploit },
-  { name: "Kali Linux", icon: SiKalilinux },
   { name: "Docker", icon: SiDocker },
   { name: "Git", icon: SiGit },
+  { name: "Kali Linux", icon: SiKalilinux },
 ];
 
 const projects = [
@@ -495,34 +501,52 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
 function Skills({ t }: { t: any }) {
   return (
     <Section id="skills" kicker={t.skills.kicker} title={t.skills.title}>
-      <div className="grid gap-10 md:grid-cols-2">
-        {/* Core Skills */}
-        <div className="rounded-xl border bg-card p-8">
-          <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.core}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {coreSkills.map((s) => (
-              <motion.div key={s.name} whileHover={{ scale: 1.02, y: -2 }}
-                className="flex items-center gap-3 rounded-lg border bg-background/50 px-4 py-4 font-mono text-sm transition-colors hover:border-primary hover:text-primary">
-                <s.icon className="h-5 w-5 text-primary shrink-0" />
-                <span className="truncate">{s.name}</span>
+      <div className="grid gap-12 lg:grid-cols-2">
+
+        <div className="rounded-2xl border bg-card p-10">
+          <h3 className="mb-8 font-mono text-lg text-primary">
+            {t.skills.core}
+          </h3>
+
+          <div className="grid gap-5">
+            {coreSkills.map((skill) => (
+              <motion.div
+                key={skill.name}
+                whileHover={{ scale: 1.03, y: -3 }}
+                className="flex items-center gap-5 rounded-xl border bg-background/50 px-6 py-6 transition-all hover:border-primary hover:shadow-[0_0_20px_rgba(0,255,170,.2)]"
+              >
+                <skill.icon className="h-8 w-8 text-primary shrink-0" />
+
+                <span className="font-mono text-lg font-semibold">
+                  {skill.name}
+                </span>
               </motion.div>
             ))}
           </div>
         </div>
 
-        {/* Tooling Panel */}
-        <div className="rounded-xl border bg-card p-8">
-          <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.tooling}</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {tools.map((tl) => (
-              <motion.div key={tl.name} whileHover={{ scale: 1.02, y: -2 }}
-                className="flex items-center gap-2 rounded-lg border bg-background/50 px-3 py-3 font-mono text-xs sm:text-sm transition-colors hover:border-primary hover:text-primary">
-                <tl.icon className="h-4 w-4 text-primary shrink-0" />
-                <span className="truncate">{tl.name}</span>
+        <div className="rounded-2xl border bg-card p-10">
+          <h3 className="mb-8 font-mono text-lg text-primary">
+            Offensive Security Toolkit
+          </h3>
+
+          <div className="grid grid-cols-2 gap-4">
+            {tools.map((tool) => (
+              <motion.div
+                key={tool.name}
+                whileHover={{ scale: 1.03, y: -3 }}
+                className="flex items-center gap-3 rounded-xl border bg-background/50 px-5 py-5 transition-all hover:border-primary hover:shadow-[0_0_20px_rgba(0,255,170,.2)]"
+              >
+                <tool.icon className="h-6 w-6 text-primary shrink-0" />
+
+                <span className="font-mono text-base">
+                  {tool.name}
+                </span>
               </motion.div>
             ))}
           </div>
         </div>
+
       </div>
     </Section>
   );
@@ -677,11 +701,6 @@ function Contact({ t }: { t: any }) {
             </a>
           ))}
         </div>
-        <button 
-          className="btn-glow inline-flex items-center gap-2 rounded-md border border-primary px-6 py-2.5 font-mono text-xs font-semibold text-primary transition-all"
-        >
-          [ {t.contact.cv} ]
-        </button>
       </div>
     </Section>
   );
