@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Shield, Terminal, Github, Linkedin, Mail, Instagram, Download,
-  ExternalLink, ChevronDown, Award, Briefcase, Code2, Cpu, Lock,
-  Network, Bug, FileCode, Container, Box, GitBranch,
+  ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu
 } from "lucide-react";
 import {
   SiLinux, SiKalilinux, SiPython, SiPostgresql, SiWireshark,
@@ -12,10 +11,37 @@ import {
 } from "react-icons/si";
 import { FaWindows } from "react-icons/fa";
 
-
 export const Route = createFileRoute("/")({
   component: Portfolio,
 });
+
+/* ---------- TRANSLATIONS OBJECT ---------- */
+const translations = {
+  en: {
+    nav: { home: "./home", about: "./about", skills: "./skills", projects: "./projects", terminal: "./terminal", timeline: "./timeline", contact: "./contact" },
+    hero: { status: "available for opportunities", subtitle: "Cyber Security · Red Team · Penetration Tester" },
+    about: { kicker: "cat about.md", title: "About", intro: "Hello! I am ILKIN FARAJOV.", p1: "I am currently studying cybersecurity, specifically focusing on Red Teaming and penetration testing. I am continuously developing my knowledge and skills in areas such as Linux, Windows, Active Directory, SQL, Python, and web security.", p2: "My goal is to become a professional penetration tester who identifies real-world security issues and contributes to their resolution.", focusing: "currently_focusing" },
+    terminal: { kicker: "./terminal --interactive", title: "Interactive Terminal", welcome: "Welcome to ilkin.farajov terminal. Type 'help' to get started.", notFound: "command not found" },
+    skills: { kicker: "ls ./skills", title: "Skills", core: "// core", tooling: "// tooling" },
+    projects: { kicker: "./projects --list", title: "Projects" },
+    timeline: { kicker: "git log --oneline", title: "Timeline" },
+    certs: { kicker: "./certs", title: "Certifications" },
+    exp: { kicker: "./experience", title: "Experience", role: "Cybersecurity Student & Independent Researcher", date: "2026 — Present", desc: "Building a portfolio of offensive-security labs, contributing to CTFs, and documenting methodology across Active Directory, web application security, and Linux/Windows privilege escalation." },
+    contact: { kicker: "./contact --reach-out", title: "Contact", text: "Open to internships, collaborations, and CTF teams. Reach out on any of the channels below.", cv: "Download CV" }
+  },
+  az: {
+    nav: { home: "./ana-səhifə", about: "./haqqımda", skills: "./bacarıqlar", projects: "./layihələr", terminal: "./terminal", timeline: "./zaman-oxu", contact: "./əlaqə" },
+    hero: { status: "vakansiyalar üçün açıqdır", subtitle: "Kiber Təhlükəsizlik · Red Team · Penetrasiya Testçisi" },
+    about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOVAM.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və onların həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
+    terminal: { kicker: "./terminal --interaktiv", title: "İnteraktiv Terminal", welcome: "İlkin Farajov terminalına xoş gəldiniz. Başlamaq üçün 'help' yazın.", notFound: "komanda tapılmadı" },
+    skills: { kicker: "ls ./bacariqlar", title: "Bacarıqlar", core: "// əsas", tooling: "// alətlər" },
+    projects: { kicker: "./layiheler --siyahı", title: "Layihələr" },
+    timeline: { kicker: "git log --oneline", title: "Zaman Oxu" },
+    certs: { kicker: "./sertifikatlar", title: "Sertifikatlar" },
+    exp: { kicker: "./təcrübə", title: "Təcrübə", role: "Kiber Təhlükəsizlik Tələbəsi və Müstəqil Tədqiqatçı", date: "2026 — Hazırda", desc: "Aktiv Directory, veb tətbiq təhlükəsizliyi və Linux/Windows imtiyazlarının yüksəldilməsi üzrə ofansiv təhlükəsizlik laboratoriyaları qurmaq, CTF-lərdə iştirak etmək və metodologiyaları sənədləşdirmək." },
+    contact: { kicker: "./elaqe --müraciət", title: "Əlaqə", text: "Təcrübə proqramları, əməkdaşlıq və CTF komandaları üçün açığam. Aşağıdakı kanallarla əlaqə saxlaya bilərsiniz.", cv: "CV-ni Yüklə" }
+  }
+};
 
 /* ---------- Background: animated grid + floating dots ---------- */
 function CyberBackground() {
@@ -182,37 +208,40 @@ const projects = [
 ];
 
 const timeline = [
-  { year: "2026", title: "Started Red Team Course", desc: "Kicked off structured Red Team training." },
-  { year: "2026", title: "Built Home Lab", desc: "Deployed AD + attacker VMs in a private virtualization lab." },
-  { year: "2026", title: "Started Web Pentesting", desc: "Working through PortSwigger Academy & OWASP labs." },
-  { year: "2026", title: "Certification Prep", desc: "Preparing for international offensive-security certification." },
+  { year: "2026", titleEn: "Started Red Team Course", titleAz: "Red Team Kursuna Başlanıldı", descEn: "Kicked off structured Red Team training.", descAz: "Strukturlu Red Team təlimlərinə start verildi." },
+  { year: "2026", titleEn: "Built Home Lab", titleAz: "Laboratoriya Qurulması", descEn: "Deployed AD + attacker VMs in a private virtualization lab.", descAz: "Şəxsi virtuallaşdırma laboratoriyasında AD və hücumçu VM-lər quruldu." },
+  { year: "2026", titleEn: "Started Web Pentesting", titleAz: "Veb Pentestinqə Başlanıldı", descEn: "Working through PortSwigger Academy & OWASP labs.", descAz: "PortSwigger Academy və OWASP laboratoriyaları üzərində iş." },
+  { year: "2026", titleEn: "Certification Prep", titleAz: "Sertifikat Hazırlığı", descEn: "Preparing for international offensive-security certification.", descAz: "Beynəlxalq ofansiv təhlükəsizlik sertifikatına hazırlıq." },
 ];
 
 /* ---------- MAIN ---------- */
 function Portfolio() {
+  const [lang, setLang] = useState<"en" | "az">("en");
+  const t = translations[lang];
+
   return (
     <div className="relative min-h-screen bg-background text-foreground dark">
       <CyberBackground />
-      <Nav />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <InteractiveTerminal />
-      <Timeline />
-      <Certifications />
-      <Experience />
-      <Contact />
+      <Nav lang={lang} setLang={setLang} t={t} />
+      <Hero t={t} />
+      <About t={t} />
+      <Skills t={t} />
+      <Projects t={t} />
+      <InteractiveTerminal t={t} lang={lang} />
+      <Timeline t={t} lang={lang} />
+      <Certifications t={t} />
+      <Experience t={t} />
+      <Contact t={t} />
       <Footer />
     </div>
   );
 }
 
 /* ---------- Nav ---------- */
-function Nav() {
+function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az") => void; t: any }) {
   const links = [
-    ["home", "Home"], ["about", "About"], ["skills", "Skills"],
-    ["projects", "Projects"], ["terminal", "Terminal"], ["timeline", "Timeline"], ["contact", "Contact"],
+    ["home", t.nav.home], ["about", t.nav.about], ["skills", t.nav.skills],
+    ["projects", t.nav.projects], ["terminal", t.nav.terminal], ["timeline", t.nav.timeline], ["contact", t.nav.contact],
   ];
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)", borderBottom: "1px solid var(--color-border)" }}>
@@ -221,12 +250,29 @@ function Nav() {
           <Terminal className="h-5 w-5 text-primary" />
           <span>ilkin.farajov<span className="text-primary">:~$</span></span>
         </a>
-        <nav className="hidden gap-6 md:flex">
+        <nav className="hidden gap-6 md:flex items-center">
           {links.map(([id, label]) => (
             <a key={id} href={`#${id}`} className="font-mono text-sm text-muted-foreground transition-colors hover:text-primary">
-              ./{label.toLowerCase()}
+              {label}
             </a>
           ))}
+          
+          {/* Language Switcher */}
+          <div className="ml-4 font-mono text-xs border border-zinc-800 px-2 py-1 bg-zinc-900/50 rounded select-none">
+            <button 
+              onClick={() => setLang("en")} 
+              className={`px-1 transition-colors ${lang === "en" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
+            >
+              EN
+            </button>
+            <span className="text-zinc-700 mx-1">|</span>
+            <button 
+              onClick={() => setLang("az")} 
+              className={`px-1 transition-colors ${lang === "az" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
+            >
+              AZ
+            </button>
+          </div>
         </nav>
       </div>
     </header>
@@ -234,7 +280,7 @@ function Nav() {
 }
 
 /* ---------- Hero ---------- */
-function Hero() {
+function Hero({ t }: { t: any }) {
   const name = useTyping("ILKIN FARAJOV", 100);
   return (
     <section id="home" className="relative z-10 flex min-h-screen items-center justify-center px-6 pt-20">
@@ -243,7 +289,7 @@ function Hero() {
           className="mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-xs"
           style={{ borderColor: "var(--primary-hex)", color: "var(--primary-hex)" }}>
           <span className="h-2 w-2 rounded-full bg-primary cursor-blink" />
-          available for opportunities
+          {t.hero.status}
         </motion.div>
 
         <h1 className="mb-4 font-mono text-4xl font-bold tracking-tight md:text-7xl">
@@ -252,7 +298,7 @@ function Hero() {
 
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.5 }}
           className="mb-3 text-lg font-medium text-primary text-glow md:text-2xl">
-          Cyber Security · Red Team · Penetration Tester
+          {t.hero.subtitle}
         </motion.p>
 
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}
@@ -265,12 +311,12 @@ function Hero() {
           <a href="#projects"
              className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold"
              style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
-            [ View Projects ]
+            [ {t.lang === "az" ? "Layihələrə Bax" : "View Projects"} ]
           </a>
           <a href="#contact"
              className="btn-glow inline-flex items-center gap-2 rounded-md border px-6 py-3 font-mono text-sm font-semibold text-primary"
              style={{ borderColor: "var(--primary-hex)" }}>
-            [ Contact Me ]
+            [ {t.lang === "az" ? "Əlaqə Saxla" : "Contact Me"} ]
           </a>
         </motion.div>
 
@@ -286,29 +332,26 @@ function Hero() {
 }
 
 /* ---------- About ---------- */
-function About() {
+function About({ t }: { t: any }) {
   const focus = ["Active Directory", "Web Security", "Network Security", "Windows", "Linux", "Python"];
   return (
-    <Section id="about" kicker="cat about.md" title="About">
+    <Section id="about" kicker={t.about.kicker} title={t.about.title}>
       <div className="grid gap-10 md:grid-cols-3">
         <TiltCard className="md:col-span-2 rounded-xl border bg-card p-8">
           <p className="mb-4 text-lg">
-            Hello! I am <span className="font-semibold text-primary">ILKIN FARAJOV</span>.
+            {t.about.intro}
           </p>
           <p className="mb-4 text-muted-foreground leading-relaxed">
-            I am currently studying cybersecurity, specifically focusing on Red Teaming and penetration testing.
-            I am continuously developing my knowledge and skills in areas such as Linux, Windows, Active Directory,
-            SQL, Python, and web security.
+            {t.about.p1}
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            My goal is to become a professional penetration tester who identifies real-world security issues
-            and contributes to their resolution.
+            {t.about.p2}
           </p>
         </TiltCard>
 
         <div className="rounded-xl border bg-card p-8">
           <div className="mb-4 flex items-center gap-2 font-mono text-sm text-primary">
-            <Cpu className="h-4 w-4" /> currently_focusing
+            <Cpu className="h-4 w-4" /> {t.about.focusing}
           </div>
           <ul className="space-y-2">
             {focus.map((f) => (
@@ -326,26 +369,39 @@ function About() {
 /* ---------- Interactive Terminal ---------- */
 type TermLine = { type: "cmd" | "out" | "err"; text: string };
 
-const ABOUT_LINES = [
-  "Hello! I am ILKIN FARAJOV.",
-  "Cybersecurity student — focus: Red Teaming & penetration testing.",
-  "Continuously learning: Linux, Windows, Active Directory, SQL, Python, web security.",
-  "Goal: become a professional penetration tester who ships real-world impact.",
-];
+function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
+  const ABOUT_LINES = lang === "en" ? [
+    "Hello! I am ILKIN FARAJOV.",
+    "Cybersecurity student — focus: Red Teaming & penetration testing.",
+    "Continuously learning: Linux, Windows, Active Directory, SQL, Python, web security.",
+    "Goal: become a professional penetration tester who ships real-world impact.",
+  ] : [
+    "Salam! Mən İLKİN FƏRƏCOVAM.",
+    "Kiber təhlükəsizlik tələbəsi — istiqamət: Red Teaming və penetrasiya testləri.",
+    "Davamlı öyrənilir: Linux, Windows, Active Directory, SQL, Python, veb təhlükəsizliyi.",
+    "Məqsəd: real təsir yaradan peşəkar penetrasiya testçisi olmaq.",
+  ];
 
-const HELP_LINES = [
-  "Available commands:",
-  "  help              show this help",
-  "  about             print bio (alias: cat about.md)",
-  "  skills            list core skills & tools (alias: ls ./skills)",
-  "  projects          list projects (alias: ls projects)",
-  "  whoami            print current user",
-  "  clear             clear the screen",
-];
+  const HELP_LINES = lang === "en" ? [
+    "Available commands:",
+    "  help              show this help",
+    "  about             print bio (alias: cat about.md)",
+    "  skills            list core skills & tools (alias: ls ./skills)",
+    "  projects          list projects (alias: ls projects)",
+    "  whoami            print current user",
+    "  clear             clear the screen",
+  ] : [
+    "Mövcud komandalar:",
+    "  help              kömək menyusunu göstər",
+    "  about             bio məlumatı çıxar (alias: cat about.md)",
+    "  skills            bacarıq və alətləri siyahıla (alias: ls ./skills)",
+    "  projects          layihələri siyahıla (alias: ls projects)",
+    "  whoami            cari istifadəçini göstər",
+    "  clear             ekranı təmizlə",
+  ];
 
-function InteractiveTerminal() {
   const [history, setHistory] = useState<TermLine[]>([
-    { type: "out", text: "Welcome to ilkin.farajov terminal. Type 'help' to get started." },
+    { type: "out", text: t.terminal.welcome },
   ]);
   const [input, setInput] = useState("");
   const [past, setPast] = useState<string[]>([]);
@@ -368,8 +424,8 @@ function InteractiveTerminal() {
 
     const lower = cmd.toLowerCase();
     if (lower === "clear" || lower === "cls") { setHistory([]); return; }
-    if (lower === "help" || lower === "?") { print([prompt, ...HELP_LINES.map((t) => ({ type: "out" as const, text: t }))]); return; }
-    if (lower === "about" || lower === "cat about.md") { print([prompt, ...ABOUT_LINES.map((t) => ({ type: "out" as const, text: t }))]); return; }
+    if (lower === "help" || lower === "?") { print([prompt, ...HELP_LINES.map((text) => ({ type: "out" as const, text }))]); return; }
+    if (lower === "about" || lower === "cat about.md") { print([prompt, ...ABOUT_LINES.map((text) => ({ type: "out" as const, text }))]); return; }
     if (lower === "projects" || lower === "ls projects" || lower === "ls ./projects") {
       print([prompt, { type: "out", text: `total ${projects.length}` }, ...projects.map((p) => ({ type: "out" as const, text: `- ${p.title}  [${p.tags.join(", ")}]` }))]);
       return;
@@ -381,12 +437,12 @@ function InteractiveTerminal() {
         ...skillsBars.map((s) => ({ type: "out" as const, text: `- ${s.name} :: ${s.value}%` })),
         { type: "out", text: "" },
         { type: "out", text: "# tooling" },
-        ...tools.map((t) => ({ type: "out" as const, text: `- ${t.name}` })),
+        ...tools.map((tl) => ({ type: "out" as const, text: `- ${tl.name}` })),
       ]);
       return;
     }
     if (lower === "whoami") { print([prompt, { type: "out", text: "ilkin.farajov" }]); return; }
-    print([prompt, { type: "err", text: `command not found: ${cmd}. Type 'help'.` }]);
+    print([prompt, { type: "err", text: `${t.terminal.notFound}: ${cmd}. Type 'help'.` }]);
   };
 
   const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -405,21 +461,15 @@ function InteractiveTerminal() {
   };
 
   return (
-    <Section id="terminal" kicker="./terminal --interactive" title="Interactive Terminal">
-      <div
-        onClick={() => inputRef.current?.focus()}
-        className="rounded-xl border bg-card overflow-hidden font-mono text-sm shadow-lg"
-      >
+    <Section id="terminal" kicker={t.terminal.kicker} title={t.terminal.title}>
+      <div onClick={() => inputRef.current?.focus()} className="rounded-xl border bg-card overflow-hidden font-mono text-sm shadow-lg">
         <div className="flex items-center gap-2 border-b px-4 py-2 bg-black/40">
           <span className="h-3 w-3 rounded-full bg-red-500/70" />
           <span className="h-3 w-3 rounded-full bg-yellow-500/70" />
           <span className="h-3 w-3 rounded-full bg-green-500/70" />
           <span className="ml-3 text-xs text-muted-foreground">ilkin.farajov@sec: ~</span>
         </div>
-        <div
-          ref={scrollRef}
-          className="h-80 overflow-y-auto p-4 space-y-1 bg-black/60"
-        >
+        <div ref={scrollRef} className="h-80 overflow-y-auto p-4 space-y-1 bg-black/60">
           {history.map((l, i) => {
             if (l.type === "cmd") {
               return (
@@ -456,16 +506,16 @@ function InteractiveTerminal() {
 }
 
 /* ---------- Skills ---------- */
-function Skills() {
+function Skills({ t }: { t: any }) {
   return (
-    <Section id="skills" kicker="ls ./skills" title="Skills">
+    <Section id="skills" kicker={t.skills.kicker} title={t.skills.title}>
       <div className="grid gap-10 md:grid-cols-2">
         <div className="space-y-6 rounded-xl border bg-card p-8">
-          <h3 className="font-mono text-sm text-primary">// core</h3>
+          <h3 className="font-mono text-sm text-primary">{t.skills.core}</h3>
           {skillsBars.map((s) => <SkillBar key={s.name} {...s} />)}
         </div>
         <div className="rounded-xl border bg-card p-8">
-          <h3 className="mb-6 font-mono text-sm text-primary">// tooling</h3>
+          <h3 className="mb-6 font-mono text-sm text-primary">{t.skills.tooling}</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {tools.map((t) => (
               <motion.div key={t.name} whileHover={{ scale: 1.05, y: -2 }}
@@ -482,9 +532,9 @@ function Skills() {
 }
 
 /* ---------- Projects ---------- */
-function Projects() {
+function Projects({ t }: { t: any }) {
   return (
-    <Section id="projects" kicker="./projects --list" title="Projects">
+    <Section id="projects" kicker={t.projects.kicker} title={t.projects.title}>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((p, i) => (
           <motion.div key={p.title}
@@ -508,7 +558,7 @@ function Projects() {
                   <Github className="h-4 w-4" /> GitHub
                 </a>
                 <a href="#" className="flex items-center gap-1 text-muted-foreground hover:text-primary">
-                  Read More <ExternalLink className="h-3 w-3" />
+                  {t.lang === "az" ? "Daxil ol" : "Read More"} <ExternalLink className="h-3 w-3" />
                 </a>
               </div>
             </TiltCard>
@@ -520,12 +570,12 @@ function Projects() {
 }
 
 /* ---------- Timeline ---------- */
-function Timeline() {
+function Timeline({ t, lang }: { t: any; lang: "en" | "az" }) {
   return (
-    <Section id="timeline" kicker="git log --oneline" title="Timeline">
+    <Section id="timeline" kicker={t.timeline.kicker} title={t.timeline.title}>
       <div className="relative mx-auto max-w-3xl">
         <div className="absolute left-4 top-0 bottom-0 w-px md:left-1/2" style={{ background: "color-mix(in oklab, var(--primary) 40%, transparent)" }} />
-        {timeline.map((t, i) => (
+        {timeline.map((tm, i) => (
           <motion.div key={i}
             initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -534,9 +584,9 @@ function Timeline() {
             className={`relative mb-10 flex md:justify-${i % 2 === 0 ? "start" : "end"}`}>
             <div className={`ml-12 md:ml-0 md:w-[45%] ${i % 2 === 0 ? "md:mr-auto md:pr-8 md:text-right" : "md:ml-auto md:pl-8"}`}>
               <div className="rounded-xl border bg-card p-6">
-                <div className="mb-1 font-mono text-xs text-primary">{t.year}</div>
-                <h3 className="mb-1 font-semibold">{t.title}</h3>
-                <p className="text-sm text-muted-foreground">{t.desc}</p>
+                <div className="mb-1 font-mono text-xs text-primary">{tm.year}</div>
+                <h3 className="mb-1 font-semibold">{lang === "en" ? tm.titleEn : tm.titleAz}</h3>
+                <p className="text-sm text-muted-foreground">{lang === "en" ? tm.descEn : tm.descAz}</p>
               </div>
             </div>
             <span className="absolute left-4 top-6 h-3 w-3 -translate-x-1/2 rounded-full md:left-1/2"
@@ -555,9 +605,9 @@ const targetCerts = [
   { name: "OSCP", full: "Offensive Security Certified Professional", org: "Offensive Security", status: "Target" },
 ];
 
-function Certifications() {
+function Certifications({ t }: { t: any }) {
   return (
-    <Section id="certifications" kicker="./certs" title="Certifications">
+    <Section id="certifications" kicker={t.certs.kicker} title={t.certs.title}>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {targetCerts.map((cert) => (
           <TiltCard key={cert.name} className="rounded-xl border bg-card p-8 text-center transition-colors hover:border-primary">
@@ -576,20 +626,19 @@ function Certifications() {
 }
 
 /* ---------- Experience ---------- */
-function Experience() {
+function Experience({ t }: { t: any }) {
   return (
-    <Section id="experience" kicker="./experience" title="Experience">
+    <Section id="experience" kicker={t.exp.kicker} title={t.exp.title}>
       <div className="rounded-xl border bg-card p-8">
         <div className="flex items-start gap-4">
           <div className="rounded-lg p-3" style={{ background: "color-mix(in oklab, var(--primary) 15%, transparent)" }}>
             <Briefcase className="h-6 w-6 text-primary" />
           </div>
           <div>
-            <h3 className="font-mono text-lg font-semibold">Cybersecurity Student & Independent Researcher</h3>
-            <p className="mb-3 font-mono text-sm text-primary">2026 — Present</p>
+            <h3 className="font-mono text-lg font-semibold">{t.exp.role}</h3>
+            <p className="mb-3 font-mono text-sm text-primary">{t.exp.date}</p>
             <p className="text-muted-foreground">
-              Building a portfolio of offensive-security labs, contributing to CTFs, and documenting
-              methodology across Active Directory, web application security, and Linux/Windows privilege escalation.
+              {t.exp.desc}
             </p>
           </div>
         </div>
@@ -597,8 +646,9 @@ function Experience() {
     </Section>
   );
 }
+
 /* ---------- Contact ---------- */
-function Contact() {
+function Contact({ t }: { t: any }) {
   const links = [
     { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
     { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
@@ -606,10 +656,10 @@ function Contact() {
     { icon: Instagram, label: "Instagram", href: "https://www.instagram.com/_ferecovilkin_/" },
   ];
   return (
-    <Section id="contact" kicker="./contact --reach-out" title="Contact">
+    <Section id="contact" kicker={t.contact.kicker} title={t.contact.title}>
       <div className="rounded-2xl border bg-card p-10 text-center">
         <p className="mx-auto mb-8 max-w-xl text-muted-foreground">
-          Open to internships, collaborations, and CTF teams. Reach out on any of the channels below.
+          {t.contact.text}
         </p>
         <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
           {links.map((l) => (
@@ -623,7 +673,7 @@ function Contact() {
         </div>
         <a href="/CV.pdf" download="Ilkin_Farajov_CV.pdf" className="btn-glow inline-flex items-center gap-2 rounded-md px-6 py-3 font-mono text-sm font-semibold"
           style={{ background: "var(--primary-hex)", color: "var(--primary-foreground)" }}>
-          <Download className="h-4 w-4" /> Download CV
+          <Download className="h-4 w-4" /> {t.contact.cv}
         </a>
       </div>
     </Section>
