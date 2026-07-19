@@ -7,6 +7,13 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  vite: {
+    // Inject a fresh favicon cache-busting token on every build so the
+    // browser/proxy always re-fetches the latest favicon after deploy.
+    define: {
+      __FAVICON_VERSION__: JSON.stringify(Date.now().toString()),
+    },
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
