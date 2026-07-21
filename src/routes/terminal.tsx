@@ -303,6 +303,9 @@ function TerminalPage() {
           return;
         }
         content.split("\n").forEach((l) => push({ kind: "out", text: l }));
+        if (target === "/root/root_flag.txt") {
+          setTimeout(() => setFlagWon(true), 500);
+        }
         return;
       }
 
