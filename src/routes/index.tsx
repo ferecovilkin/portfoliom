@@ -307,6 +307,21 @@ function Hero({ t }: { t: any }) {
           </a>
         </motion.div>
 
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.2 }}
+          className="mt-6 flex justify-center">
+          <a
+            href="/terminal"
+            className="group relative inline-flex items-center gap-3 overflow-hidden rounded-md border border-primary/60 bg-black/60 px-6 py-3 font-mono text-sm font-bold uppercase tracking-widest text-primary transition-all hover:bg-primary/10 hover:shadow-[0_0_30px_rgba(0,255,136,0.7)]"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
+            <span className="glitch-text" data-text="ACCESS SECURE TERMINAL">ACCESS SECURE TERMINAL</span>
+            <span className="text-primary/70 group-hover:text-primary">›_</span>
+          </a>
+        </motion.div>
+
         <motion.a href="#about" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2.5 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 text-primary">
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 1.6, repeat: Infinity }}>
