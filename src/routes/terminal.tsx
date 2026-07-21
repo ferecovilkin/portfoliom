@@ -501,7 +501,19 @@ function TerminalPage() {
         <div className="rounded-b-lg border border-t-0 border-primary/30 bg-black/80 shadow-[0_0_60px_rgba(0,255,136,0.15)]">
           <div
             ref={scrollRef}
-            onClick={() => inputRef.current?.focus()}
+            onClick={() => {
+              const sel = window.getSelection();
+              if (sel && sel.toString().length > 0) return; // allow text selection/copy
+              inputRef.current?.focus();
+            }}
+            onPaste={(e) => {
+              if (document.activeElement !== inputRef.current) {
+                e.preventDefault();
+                const text = e.clipboardData.getData("text");
+                setInput((v) => v + text);
+                inputRef.current?.focus();
+              }
+            }}
             className="h-[70vh] md:h-[75vh] overflow-y-auto p-4 text-sm leading-relaxed"
           >
             {lines.map((l, i) => (
