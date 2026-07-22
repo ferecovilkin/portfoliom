@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Shield, Terminal, Github, Linkedin, Mail, Key, Search, Eye,
-  ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu
+  ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu, Menu, X
 } from "lucide-react";
 import {
   SiLinux, SiKalilinux, SiPython, SiPostgresql, SiWireshark,
@@ -228,40 +228,97 @@ function Nav({ lang, setLang, t }: { lang: "en" | "az"; setLang: (l: "en" | "az"
     ["projects", t.nav.projects], ["terminal", t.nav.terminal], ["timeline", t.nav.timeline],
     ["certs", t.certs.title], ["experience", t.exp.title], ["contact", t.nav.contact],
   ];
+  const mobileLinks = [
+    ["home", t.nav.home], ["about", t.nav.about], ["skills", t.nav.skills],
+    ["projects", t.nav.projects], ["contact", t.nav.contact],
+  ];
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const LangSwitcher = (
+    <div className="font-mono text-xs border border-zinc-800 px-2 py-1 bg-zinc-900/50 rounded select-none flex items-center shrink-0">
+      <button
+        onClick={() => setLang("en")}
+        aria-label="Switch language to English"
+        className={`px-1 transition-colors ${lang === "en" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
+      >
+        EN
+      </button>
+      <span className="text-zinc-700 mx-1">|</span>
+      <button
+        onClick={() => setLang("az")}
+        aria-label="Switch language to Azerbaijani"
+        className={`px-1 transition-colors ${lang === "az" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
+      >
+        AZ
+      </button>
+    </div>
+  );
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)", borderBottom: "1px solid var(--color-border)" }}>
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#home" className="flex items-center gap-2 font-mono font-bold">
-          <Terminal className="h-5 w-5 text-primary" />
-          <span>ilkin.farajov<span className="text-primary">:~$</span></span>
+    <header ref={menuRef} className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md" style={{ background: "color-mix(in oklab, var(--background) 70%, transparent)", borderBottom: "1px solid var(--color-border)" }}>
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-4 md:px-6">
+        <a href="#home" className="flex min-w-0 items-center gap-2 font-mono font-bold">
+          <Terminal className="h-5 w-5 shrink-0 text-primary" />
+          <span className="truncate text-sm sm:text-base md:text-base">ilkin.farajov<span className="text-primary">:~$</span></span>
         </a>
-        <nav className="flex gap-4 md:gap-6 items-center overflow-x-auto max-w-full md:max-w-none no-scrollbar py-1">
+
+        {/* Desktop nav — unchanged behavior */}
+        <nav className="hidden md:flex gap-4 md:gap-6 items-center max-w-none py-1">
           {links.map(([id, label]) => (
             <a key={id} href={`#${id}`} className="font-mono text-xs md:text-sm text-muted-foreground transition-colors hover:text-primary whitespace-nowrap">
               {label}
             </a>
           ))}
-          
-          {/* Language Switcher */}
-          <div className="ml-2 font-mono text-xs border border-zinc-800 px-2 py-1 bg-zinc-900/50 rounded select-none flex items-center shrink-0">
-            <button 
-              onClick={() => setLang("en")} 
-              aria-label="Switch language to English"
-              className={`px-1 transition-colors ${lang === "en" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
-            >
-              EN
-            </button>
-            <span className="text-zinc-700 mx-1">|</span>
-            <button 
-              onClick={() => setLang("az")} 
-              aria-label="Switch language to Azerbaijani"
-              className={`px-1 transition-colors ${lang === "az" ? "text-primary font-bold" : "text-zinc-500 hover:text-zinc-300"}`}
-            >
-              AZ
-            </button>
-          </div>
+          {LangSwitcher}
         </nav>
+
+        {/* Mobile controls */}
+        <div className="flex md:hidden items-center gap-2 shrink-0">
+          {LangSwitcher}
+          <button
+            onClick={() => setOpen((o) => !o)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            className="rounded border border-zinc-800 bg-zinc-900/50 p-2 text-primary transition-colors hover:border-primary/60"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div id="mobile-menu" className="md:hidden border-t border-zinc-800 bg-black/80 backdrop-blur-md">
+          <nav className="mx-auto flex max-w-6xl flex-col px-4 py-2">
+            {mobileLinks.map(([id, label]) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                onClick={() => setOpen(false)}
+                className="font-mono text-sm text-muted-foreground py-3 px-2 rounded border-b border-zinc-800/60 last:border-b-0 transition-colors hover:text-primary hover:bg-primary/5"
+              >
+                <span className="text-primary/70">&gt; </span>{label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
