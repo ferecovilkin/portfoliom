@@ -34,7 +34,7 @@ const translations = {
     langKey: "az",
     nav: { home: "Ana Səhifə", about: "Haqqımda", skills: "Bacarıqlar", projects: "Layihələr", terminal: "Terminal", timeline: "Zaman Oxu", contact: "Əlaqə" },
     hero: { name: "İLKİN FƏRƏCOV", status: "vakansiyalar üçün açıqdır", subtitle: "Kiber Təhlükəsizlik · Red Team · Penetrasiya Testçisi", viewBtn: "Layihələrə Bax", contactBtn: "Əlaqə Saxla" },
-    about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOVAM.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və niiden həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
+    about: { kicker: "cat haqqimda.md", title: "Haqqımda", intro: "Salam! Mən İLKİN FƏRƏCOV.", p1: "Hazırda kiber təhlükəsizlik sahəsini, xüsusilə Red Teaming və penetrasiya testlərini öyrənirəm. Linux, Windows, Active Directory, SQL, Python və veb təhlükəsizliyi kimi sahələrdə bilik və bacarıqlarımı davamlı olaraq inkişaf etdirirəm.", p2: "Məqsədim real dünya təhlükəsizlik problemlərini aşkarlayan və onların həllinə töhfə verən peşəkar penetrasiya testçisi olmaqdır.", focusing: "hazırda_diqqətdə" },
     terminal: { kicker: "./terminal --interaktiv", title: "İnteraktiv Terminal", welcome: "İlkin Farajov terminalına xoş gəldiniz. Başlamaq üçün 'help' yazın.", notFound: "komanda tapılmadı" },
     skills: { kicker: "ls ./bacariqlar", title: "Bacarıqlar", core: "// metodologiya & ƏS", tooling: "// pentest arsenalı" },
     projects: { kicker: "./layiheler --siyahı", title: "Layihələr" },
@@ -435,7 +435,7 @@ function InteractiveTerminal({ t, lang }: { t: any; lang: "en" | "az" }) {
     "Continuously learning: Linux, Windows, Active Directory, SQL, Python, web security.",
     "Goal: become a professional penetration tester who ships real-world impact.",
   ] : [
-    "Salam! Mən İLKİN FƏRƏCOVAM.",
+    "Salam! Mən İLKİN FƏRƏCOV.",
     "Kiber təhlükəsizlik tələbəsi — istiqamət: Red Teaming və penetrasiya testləri.",
     "Davamlı öyrənilir: Linux, Windows, Active Directory, SQL, Python, veb təhlükəsizliyi.",
     "Məqsəd: real təsir yaradan peşəkar penetrasiya testçisi olmaq.",
