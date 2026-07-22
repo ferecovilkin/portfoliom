@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Shield, Terminal, Github, Linkedin, Mail, Key, Search, Eye,
-  ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu
+  ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu, Menu, X
 } from "lucide-react";
 import {
   SiLinux, SiKalilinux, SiPython, SiPostgresql, SiWireshark,
