@@ -728,11 +728,35 @@ function Experience({ t }: { t: any }) {
 
 /* ---------- Contact ---------- */
 function Contact({ t }: { t: any }) {
+  const [copiedLabel, setCopiedLabel] = useState<string | null>(null);
+
   const items = [
-    { icon: Mail, label: "Email", value: "ferecovilkin77@gmail.com", href: "mailto:ferecovilkin77@gmail.com" },
-    { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/ferecovilkin", href: "https://www.linkedin.com/in/ferecovilkin/" },
-    { icon: Github, label: "GitHub", value: "github.com/ferecovilkin", href: "https://github.com/ferecovilkin" },
+    { icon: Mail, label: "Email", value: "ferecovilkin77@gmail.com", href: "mailto:ferecovilkin77@gmail.com", toast: "Email copied!" },
+    { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/ferecovilkin", href: "https://www.linkedin.com/in/ferecovilkin/", toast: "LinkedIn profile copied!" },
+    { icon: Github, label: "GitHub", value: "github.com/ferecovilkin", href: "https://github.com/ferecovilkin", toast: "GitHub profile copied!" },
   ];
+
+  const copyToClipboard = async (item: typeof items[number]) => {
+    try {
+      await navigator.clipboard.writeText(item.value);
+      toast.success(item.toast);
+      setCopiedLabel(item.label);
+      setTimeout(() => setCopiedLabel((current) => (current === item.label ? null : current)), 1500);
+    } catch {
+      toast.error("Failed to copy to clipboard.");
+    }
+  };
+
+  const handleValueContextMenu = (e: React.MouseEvent, item: typeof items[number]) => {
+    e.preventDefault();
+    copyToClipboard(item);
+  };
+
+  const handleCopyClick = (e: React.MouseEvent, item: typeof items[number]) => {
+    e.preventDefault();
+    e.stopPropagation();
+    copyToClipboard(item);
+  };
 
   return (
     <Section id="contact" kicker={t.contact.kicker} title={t.contact.title}>
@@ -751,10 +775,30 @@ function Contact({ t }: { t: any }) {
                 <item.icon className="h-5 w-5 text-primary shrink-0" />
                 <div className="text-left">
                   <div className="text-xs text-muted-foreground uppercase tracking-wider">{item.label}</div>
-                  <div className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">{item.value}</div>
+                  <div
+                    className="text-sm font-medium text-foreground transition-colors group-hover:text-primary cursor-context-menu"
+                    onContextMenu={(e) => handleValueContextMenu(e, item)}
+                    title="Right-click to copy"
+                  >
+                    {item.value}
+                  </div>
                 </div>
               </div>
-              <ExternalLink className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={(e) => handleCopyClick(e, item)}
+                  aria-label={`Copy ${item.label}`}
+                  className="rounded-md p-2 text-muted-foreground transition-all duration-200 hover:scale-110 hover:bg-primary/10 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+                >
+                  {copiedLabel === item.label ? (
+                    <Check className="h-4 w-4 text-primary" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
+                <ExternalLink className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
+              </div>
             </a>
           ))}
         </div>
