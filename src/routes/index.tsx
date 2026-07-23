@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
 import {
   Shield, Terminal, Github, Linkedin, Mail, Key, Search, Eye,
-  ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu, Menu, X
+  ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu, Menu, X,
+  ArrowUp, Send
 } from "lucide-react";
 import {
   SiLinux, SiKalilinux, SiPython, SiPostgresql, SiWireshark,
@@ -217,6 +218,7 @@ export default function Portfolio() {
       <Experience t={t} />
       <Contact t={t} />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
@@ -725,33 +727,79 @@ function Experience({ t }: { t: any }) {
 
 /* ---------- Contact ---------- */
 function Contact({ t }: { t: any }) {
-  const links = [
-    { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
-    { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
-    { icon: Mail, label: "Email", href: "mailto:ferecovilkin77@gmail.com" }
+  const items = [
+    { icon: Mail, label: "Email", value: "ferecovilkin77@gmail.com", href: "mailto:ferecovilkin77@gmail.com" },
+    { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/ferecovilkin", href: "https://www.linkedin.com/in/ferecovilkin/" },
+    { icon: Github, label: "GitHub", value: "github.com/ferecovilkin", href: "https://github.com/ferecovilkin" },
+    { icon: Send, label: "Telegram", value: "t.me/yourusername", href: "https://t.me/yourusername" },
   ];
 
   return (
     <Section id="contact" kicker={t.contact.kicker} title={t.contact.title}>
       <div className="mx-auto max-w-2xl text-center">
         <p className="mb-8 text-muted-foreground">{t.contact.text}</p>
-        <div className="mb-10 flex flex-wrap justify-center gap-4">
-          {links.map((link) => (
+        <div className="grid gap-4">
+          {items.map((item) => (
             <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
+              key={item.label}
+              href={item.href}
+              target={item.href.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg border bg-card px-5 py-3 font-mono text-sm transition-colors hover:border-primary hover:text-primary"
+              className="group flex items-center justify-between rounded-xl border bg-card px-5 py-4 font-mono text-sm transition-all hover:border-primary hover:bg-primary/5 hover:shadow-glow"
             >
-              <link.icon className="h-4 w-4 text-primary" />
-              {link.label}
+              <div className="flex items-center gap-4">
+                <item.icon className="h-5 w-5 text-primary shrink-0" />
+                <div className="text-left">
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider">{item.label}</div>
+                  <div className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">{item.value}</div>
+                </div>
+              </div>
+              <ExternalLink className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
             </a>
           ))}
         </div>
-        
       </div>
     </Section>
+  );
+}
+
+/* ---------- Scroll to Top ---------- */
+function ScrollToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 300);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    const duration = 400;
+    const start = window.scrollY;
+    const startTime = performance.now();
+    const easeOutQuad = (t: number) => t * (2 - t);
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = easeOutQuad(progress);
+      window.scrollTo(0, start * (1 - ease));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  };
+
+  return (
+    <motion.button
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={visible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+      onClick={scrollToTop}
+      aria-label="Scroll to top"
+      className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-primary/40 bg-card text-primary shadow-glow transition-all duration-300 hover:scale-110 hover:shadow-glow-strong focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background md:bottom-8 md:right-8"
+    >
+      <ArrowUp className="h-5 w-5" />
+    </motion.button>
   );
 }
 
