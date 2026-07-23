@@ -218,6 +218,7 @@ export default function Portfolio() {
       <Experience t={t} />
       <Contact t={t} />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }
