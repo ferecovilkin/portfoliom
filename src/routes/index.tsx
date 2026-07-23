@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { toast } from "sonner";
 import {
   Shield, Terminal, Github, Linkedin, Mail, Key, Search, Eye,
   ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu, Menu, X,
-  ArrowUp
+  ArrowUp, Copy, Check
 } from "lucide-react";
 import {
   SiLinux, SiKalilinux, SiPython, SiPostgresql, SiWireshark,
