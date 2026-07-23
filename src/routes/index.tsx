@@ -728,7 +728,7 @@ function Contact({ t }: { t: any }) {
   const links = [
     { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
     { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
-    { icon: Mail, label: "Email", href: "mailto:ilkinferajov@sec.az" }
+    { icon: Mail, label: "Email", href: "mailto:ferecovilkin77@gmail.com" }
   ];
 
   return (
