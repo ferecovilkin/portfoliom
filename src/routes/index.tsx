@@ -757,6 +757,46 @@ function Contact({ t }: { t: any }) {
   );
 }
 
+/* ---------- Scroll to Top ---------- */
+function ScrollToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 300);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    const duration = 400;
+    const start = window.scrollY;
+    const startTime = performance.now();
+    const easeOutQuad = (t: number) => t * (2 - t);
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = easeOutQuad(progress);
+      window.scrollTo(0, start * (1 - ease));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  };
+
+  return (
+    <motion.button
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={visible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+      onClick={scrollToTop}
+      aria-label="Scroll to top"
+      className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-primary/40 bg-card text-primary shadow-glow transition-all duration-300 hover:scale-110 hover:shadow-glow-strong focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background md:bottom-8 md:right-8"
+    >
+      <ArrowUp className="h-5 w-5" />
+    </motion.button>
+  );
+}
+
 /* ---------- Footer ---------- */
 function Footer() {
   return (
