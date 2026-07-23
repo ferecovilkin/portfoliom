@@ -727,31 +727,37 @@ function Experience({ t }: { t: any }) {
 
 /* ---------- Contact ---------- */
 function Contact({ t }: { t: any }) {
-  const links = [
-    { icon: Github, label: "GitHub", href: "https://github.com/ferecovilkin" },
-    { icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/in/ferecovilkin/" },
-    { icon: Mail, label: "Email", href: "mailto:ferecovilkin77@gmail.com" }
+  const items = [
+    { icon: Mail, label: "Email", value: "ferecovilkin77@gmail.com", href: "mailto:ferecovilkin77@gmail.com" },
+    { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/ferecovilkin", href: "https://www.linkedin.com/in/ferecovilkin/" },
+    { icon: Github, label: "GitHub", value: "github.com/ferecovilkin", href: "https://github.com/ferecovilkin" },
+    { icon: Send, label: "Telegram", value: "t.me/yourusername", href: "https://t.me/yourusername" },
   ];
 
   return (
     <Section id="contact" kicker={t.contact.kicker} title={t.contact.title}>
       <div className="mx-auto max-w-2xl text-center">
         <p className="mb-8 text-muted-foreground">{t.contact.text}</p>
-        <div className="mb-10 flex flex-wrap justify-center gap-4">
-          {links.map((link) => (
+        <div className="grid gap-4">
+          {items.map((item) => (
             <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
+              key={item.label}
+              href={item.href}
+              target={item.href.startsWith("mailto:") ? undefined : "_blank"}
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg border bg-card px-5 py-3 font-mono text-sm transition-colors hover:border-primary hover:text-primary"
+              className="group flex items-center justify-between rounded-xl border bg-card px-5 py-4 font-mono text-sm transition-all hover:border-primary hover:bg-primary/5 hover:shadow-glow"
             >
-              <link.icon className="h-4 w-4 text-primary" />
-              {link.label}
+              <div className="flex items-center gap-4">
+                <item.icon className="h-5 w-5 text-primary shrink-0" />
+                <div className="text-left">
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider">{item.label}</div>
+                  <div className="text-sm font-medium text-foreground transition-colors group-hover:text-primary">{item.value}</div>
+                </div>
+              </div>
+              <ExternalLink className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
             </a>
           ))}
         </div>
-        
       </div>
     </Section>
   );
