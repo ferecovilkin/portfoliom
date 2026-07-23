@@ -4,7 +4,7 @@ import { motion, useInView, useMotionValue, useSpring, useTransform } from "fram
 import {
   Shield, Terminal, Github, Linkedin, Mail, Key, Search, Eye,
   ExternalLink, ChevronDown, Award, Briefcase, Lock, Network, Bug, FileCode, Cpu, Menu, X,
-  ArrowUp, Send
+  ArrowUp
 } from "lucide-react";
 import {
   SiLinux, SiKalilinux, SiPython, SiPostgresql, SiWireshark,
@@ -731,7 +731,6 @@ function Contact({ t }: { t: any }) {
     { icon: Mail, label: "Email", value: "ferecovilkin77@gmail.com", href: "mailto:ferecovilkin77@gmail.com" },
     { icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/ferecovilkin", href: "https://www.linkedin.com/in/ferecovilkin/" },
     { icon: Github, label: "GitHub", value: "github.com/ferecovilkin", href: "https://github.com/ferecovilkin" },
-    { icon: Send, label: "Telegram", value: "t.me/yourusername", href: "https://t.me/yourusername" },
   ];
 
   return (
