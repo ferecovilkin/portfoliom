@@ -764,42 +764,44 @@ function Contact({ t }: { t: any }) {
         <p className="mb-8 text-muted-foreground">{t.contact.text}</p>
         <div className="grid gap-4">
           {items.map((item) => (
-            <a
+            <div
               key={item.label}
-              href={item.href}
-              target={item.href.startsWith("mailto:") ? undefined : "_blank"}
-              rel="noopener noreferrer"
               className="group flex items-center justify-between rounded-xl border bg-card px-5 py-4 font-mono text-sm transition-all hover:border-primary hover:bg-primary/5 hover:shadow-glow"
             >
-              <div className="flex items-center gap-4">
-                <item.icon className="h-5 w-5 text-primary shrink-0" />
-                <div className="text-left">
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">{item.label}</div>
-                  <div
-                    className="text-sm font-medium text-foreground transition-colors group-hover:text-primary cursor-context-menu"
-                    onContextMenu={(e) => handleValueContextMenu(e, item)}
-                    title="Right-click to copy"
-                  >
-                    {item.value}
+              <a
+                href={item.href}
+                target={item.href.startsWith("mailto:") ? undefined : "_blank"}
+                rel="noopener noreferrer"
+                className="flex flex-1 items-center justify-between"
+              >
+                <div className="flex items-center gap-4">
+                  <item.icon className="h-5 w-5 text-primary shrink-0" />
+                  <div className="text-left">
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider">{item.label}</div>
+                    <div
+                      className="text-sm font-medium text-foreground transition-colors group-hover:text-primary cursor-context-menu"
+                      onContextMenu={(e) => handleValueContextMenu(e, item)}
+                      title="Right-click to copy"
+                    >
+                      {item.value}
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={(e) => handleCopyClick(e, item)}
-                  aria-label={`Copy ${item.label}`}
-                  className="rounded-md p-2 text-muted-foreground transition-all duration-200 hover:scale-110 hover:bg-primary/10 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
-                >
-                  {copiedLabel === item.label ? (
-                    <Check className="h-4 w-4 text-primary" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
-                </button>
                 <ExternalLink className="h-4 w-4 text-muted-foreground transition-colors group-hover:text-primary" />
-              </div>
-            </a>
+              </a>
+              <button
+                type="button"
+                onClick={(e) => handleCopyClick(e, item)}
+                aria-label={`Copy ${item.label}`}
+                className="ml-3 rounded-md p-2 text-muted-foreground transition-all duration-200 hover:scale-110 hover:bg-primary/10 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background"
+              >
+                {copiedLabel === item.label ? (
+                  <Check className="h-4 w-4 text-primary" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           ))}
         </div>
       </div>
